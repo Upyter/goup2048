@@ -22,20 +22,20 @@
 package logic;
 
 /**
- * The 2048 game.
- * @since 0.1
+ * A fail fast implementation of the 2048 game. {@link Strickt2048} throws an
+ * exception when an illegal move has been played.
+ * <p>This class is mutable and not thread-safe.</p>
+ * @since 0.2
  */
-public interface Game2048 {
-    /**
-     * Plays the given move (if possible). Whether an illegal move causes an
-     * exception or not is up to the implementation.
-     * @param move The move to be applied.
-     */
-    void play(Move move);
+public class Strickt2048 implements Game2048 {
 
-    /**
-     * Returns the moves that can be currently played.
-     * @return The moves that can be played.
-     */
-    Iterable<Move> possibleMoves();
+    @Override
+    public final void play(final Move move) {
+        throw new UnsupportedOperationException("#play()");
+    }
+
+    @Override
+    public final Iterable<Move> possibleMoves() {
+        throw new UnsupportedOperationException("#possibleMoves()");
+    }
 }

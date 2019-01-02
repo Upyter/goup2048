@@ -22,20 +22,10 @@
 package logic;
 
 /**
- * The 2048 game.
- * @since 0.1
+ * Moves that are playable in the 2048 game.
+ * @see Game2048
+ * @since 0.2
  */
-public interface Game2048 {
-    /**
-     * Plays the given move (if possible). Whether an illegal move causes an
-     * exception or not is up to the implementation.
-     * @param move The move to be applied.
-     */
-    void play(Move move);
+public enum Move {
 
-    /**
-     * Returns the moves that can be currently played.
-     * @return The moves that can be played.
-     */
-    Iterable<Move> possibleMoves();
 }

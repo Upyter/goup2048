@@ -27,7 +27,7 @@
 
     <groupId>com.goup2048</groupId>
     <artifactId>goup2048</artifactId>
-    <version>0.1</version>
+    <version>0.2</version>
 
     <build>
         <plugins>
