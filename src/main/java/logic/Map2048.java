@@ -26,4 +26,16 @@ package logic;
  * @since 0.2
  */
 public interface Map2048 {
+    /**
+     * Applies the given move if it's possible. Dependent on the implementation,
+     * it may throw an exception otherwise.
+     * @param move The move to be applied.
+     */
+    void slide(Move move);
+
+    /**
+     * Returns the moves that are possible on the current map.
+     * @return The moves currently possible.
+     */
+    Iterable<Move> possibleMoves();
 }

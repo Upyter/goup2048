@@ -21,6 +21,8 @@
 
 package logic;
 
+import java.util.Collection;
+
 /**
  * A fail fast implementation of the 2048 game. {@link Strickt2048} throws an
  * exception when an illegal move has been played.
@@ -28,14 +30,36 @@ package logic;
  * @since 0.2
  */
 public class Strickt2048 implements Game2048 {
+    /**
+     * The map of this game.
+     */
+    private final Map2048 map;
 
-    @Override
-    public final void play(final Move move) {
-        throw new UnsupportedOperationException("#play()");
+    /**
+     * Ctor.
+     * @param map The map of the game.
+     */
+    public Strickt2048(final Map2048 map) {
+        this.map = map;
     }
 
     @Override
-    public final Iterable<Move> possibleMoves() {
+    public final void play(final Move move) {
+        if (this.possibleMoves().contains(move)) {
+            this.map.slide(move);
+        } else {
+            throw new IllegalArgumentException(
+                String.format(
+                    "The chosen  move isn't possible. Map: %s, moves: %s",
+                    this.map,
+                    this.possibleMoves()
+                )
+            );
+        }
+    }
+
+    @Override
+    public final Collection<Move> possibleMoves() {
         throw new UnsupportedOperationException("#possibleMoves()");
     }
 }
