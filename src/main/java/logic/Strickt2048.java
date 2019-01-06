@@ -60,6 +60,6 @@ public class Strickt2048 implements Game2048 {
 
     @Override
     public final Collection<Move> possibleMoves() {
-        throw new UnsupportedOperationException("#possibleMoves()");
+        return this.map.possibleMoves();
     }
 }

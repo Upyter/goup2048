@@ -24,20 +24,19 @@ package logic;
 import java.util.Collection;
 
 /**
- * The map of the 2048 game.
- * @since 0.2
+ * A fail fast 2048 map.
+ * <p>This class is mutable and not thread-safe.</p>
+ * @since 0.3
  */
-public interface Map2048 {
-    /**
-     * Applies the given move if it's possible. Dependent on the implementation,
-     * it may throw an exception otherwise.
-     * @param move The move to be applied.
-     */
-    void slide(Move move);
+public class StricktMap implements Map2048 {
 
-    /**
-     * Returns the moves that are possible on the current map.
-     * @return The moves currently possible.
-     */
-    Collection<Move> possibleMoves();
+    @Override
+    public final void slide(final Move move) {
+        throw new UnsupportedOperationException("#slide()");
+    }
+
+    @Override
+    public final Collection<Move> possibleMoves() {
+        throw new UnsupportedOperationException("#possibleMoves()");
+    }
 }
