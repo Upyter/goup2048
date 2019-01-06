@@ -46,7 +46,8 @@ public class Strickt2048 implements Game2048 {
     @Override
     public final void play(final Move move) {
         if (this.possibleMoves().contains(move)) {
-            this.map.slide(move);
+            this.map.lines(move).merge();
+            this.map.lines(move).push();
         } else {
             throw new IllegalArgumentException(
                 String.format(

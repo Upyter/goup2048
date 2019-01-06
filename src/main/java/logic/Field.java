@@ -31,10 +31,4 @@ public interface Field {
      * @return The number of the field.
      */
     int number();
-
-    /**
-     *
-     * @param other
-     */
-    void mergeWith(Field other);
 }

@@ -21,39 +21,19 @@
 
 package logic;
 
-import java.util.Collection;
-
 /**
- * The map of the 2048 game.
- * @since 0.2
+ * A mutable view on a collection of fields. It is ordered in such a way
+ * that pushing and merging can be applied in a uniform way.
+ * @since 0.4
  */
-public interface Map2048 {
+public interface Line {
     /**
-     * Applies the given move if it's possible. Dependent on the implementation,
-     * it may throw an exception otherwise.
-     * @param move The move to be applied.
+     * Pushes the fields of the line.
      */
-    void slide(Move move);
+    void push();
 
     /**
-     * Returns the moves that are possible on the current map.
-     * @return The moves currently possible.
+     * Merges the fields of the line.
      */
-    Collection<Move> possibleMoves();
-
-    /**
-     * Returns the fields ordered to make pushing and merging easier. Example:
-     * <p>Map:
-     *  <p>Row[0, 1]</p>
-     *  <p>Row[2, 3]</p>
-     * </p>
-     * <p>line(right): [1, 0], [3, 2]</p>
-     * <p>line(left): [0, 1], [2, 3]</p>
-     * <p>line(up): [0, 2], [1, 3]</p>
-     * <p>line(down): [2, 0], [3, 1]</p>
-     * <b>The line operations will mutate the map!</b>
-     * @param move The move on which the ordering should based on.
-     * @return The fields in ordered lines.
-     */
-    Line lines(Move move);
+    void merge();
 }
