@@ -21,24 +21,17 @@
 
 package logic;
 
-/**
- * A single field of the 2048 game grid.
- * @since 0.3
- */
-public interface Field {
-    /**
-     * Returns the number of the field.
-     * @return The number of the field.
-     */
-    int number();
+import java.util.Iterator;
 
+/**
+ * An iterator for collections of fields.
+ * @since 0.6
+ */
+public interface FieldIterator extends Iterator<Field> {
     /**
-     * A field is empty when it has a {@link #number()} of 0.
-     * @param field The field to check for emptiness.
-     * @return True if the field is 0 and false otherwise.
+     * Swaps the current values (based on the last value of
+     * {@link FieldIterator#next()}) of the two iterators.
+     * @param other The field iterator to swap the values with.
      */
-    @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
-    static boolean isEmpty(final Field field) {
-        return field.number() == 0;
-    }
+    void swapWith(FieldIterator other);
 }

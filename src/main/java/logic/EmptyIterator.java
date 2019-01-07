@@ -22,23 +22,26 @@
 package logic;
 
 /**
- * A single field of the 2048 game grid.
- * @since 0.3
+ * An iterator for a list of fields. With him you can iterate through all empty
+ * (based on {@link Field#isEmpty(Field)}) fields.
+ * <p>This class is mutable and not thread-safe.</p>
+ * @see Field
+ * @since 0.6
  */
-public interface Field {
-    /**
-     * Returns the number of the field.
-     * @return The number of the field.
-     */
-    int number();
+public class EmptyIterator implements FieldIterator {
 
-    /**
-     * A field is empty when it has a {@link #number()} of 0.
-     * @param field The field to check for emptiness.
-     * @return True if the field is 0 and false otherwise.
-     */
-    @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
-    static boolean isEmpty(final Field field) {
-        return field.number() == 0;
+    @Override
+    public final boolean hasNext() {
+        throw new UnsupportedOperationException("#hasNext()");
+    }
+
+    @Override
+    public final Field next() {
+        throw new UnsupportedOperationException("#next()");
+    }
+
+    @Override
+    public final void swapWith(final FieldIterator other) {
+        throw new UnsupportedOperationException("#swapWith()");
     }
 }

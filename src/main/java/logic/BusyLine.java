@@ -45,7 +45,11 @@ public class BusyLine implements Line {
 
     @Override
     public final void push() {
-        throw new UnsupportedOperationException("#push()");
+        final var empty = new EmptyIterator();
+        final var filled = new FilledIterator();
+        for (; empty.hasNext() && filled.hasNext(); empty.next()) {
+            empty.swapWith(filled);
+        }
     }
 
     @Override
