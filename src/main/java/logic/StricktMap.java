@@ -39,9 +39,4 @@ public class StricktMap implements Map2048 {
     public final Collection<Move> possibleMoves() {
         throw new UnsupportedOperationException("#possibleMoves()");
     }
-
-    @Override
-    public final Line lines(final Move move) {
-        throw new UnsupportedOperationException("#line()");
-    }
 }

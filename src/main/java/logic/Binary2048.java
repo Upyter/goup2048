@@ -21,27 +21,41 @@
 
 package logic;
 
+import java.util.Collection;
+
 /**
- * An iterator for a list of fields. With him you can iterate through all empty
- * (based on {@link Field#isEmpty(Field)}) fields.
+ * A fast binary 2048 implementation. It uses pre calculated game states and
+ * binary operation to switch its own state.
  * <p>This class is mutable and not thread-safe.</p>
- * @see Field
- * @since 0.6
+ * @since 0.2
  */
-public class EmptyIterator implements FieldIterator {
+public class Binary2048 implements Game2048 {
+    /**
+     * The map of this game.
+     */
+    private final Map2048 map;
 
-    @Override
-    public final boolean hasNext() {
-        throw new UnsupportedOperationException("#hasNext()");
+    /**
+     * Ctor.
+     * @param map The map of the game.
+     */
+    public Binary2048(final Map2048 map) {
+        this.map = map;
     }
 
     @Override
-    public final Field next() {
-        throw new UnsupportedOperationException("#next()");
+    public final void play(final Move move) {
+        throw new IllegalArgumentException(
+            String.format(
+                "The chosen  move isn't possible. Map: %s, moves: %s",
+                this.map,
+                this.possibleMoves()
+            )
+        );
     }
 
     @Override
-    public final void swapWith(final FieldIterator other) {
-        throw new UnsupportedOperationException("#swapWith()");
+    public final Collection<Move> possibleMoves() {
+        return this.map.possibleMoves();
     }
 }

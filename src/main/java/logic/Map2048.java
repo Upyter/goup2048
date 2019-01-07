@@ -40,20 +40,4 @@ public interface Map2048 {
      * @return The moves currently possible.
      */
     Collection<Move> possibleMoves();
-
-    /**
-     * Returns the fields ordered to make pushing and merging easier. Example:
-     * <p>Map:
-     *  <p>Row[0, 1]</p>
-     *  <p>Row[2, 3]</p>
-     * </p>
-     * <p>line(right): [1, 0], [3, 2]</p>
-     * <p>line(left): [0, 1], [2, 3]</p>
-     * <p>line(up): [0, 2], [1, 3]</p>
-     * <p>line(down): [2, 0], [3, 1]</p>
-     * <b>The line operations will mutate the map!</b>
-     * @param move The move on which the ordering should based on.
-     * @return The fields in ordered lines.
-     */
-    Line lines(Move move);
 }
