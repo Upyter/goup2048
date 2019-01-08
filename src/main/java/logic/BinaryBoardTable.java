@@ -22,18 +22,13 @@
 package logic;
 
 /**
- * Moves that are playable in the binary version of the 2048 game. A move knows
- * how to transform the board according to itself. To get a concrete move,
- * ask the game instance with {@link Game2048#possibleMoves()} and play one of
- * them.
- * @see Game2048
- * @since 0.2
+ * A board table that calculates all possible boards from tiles with 0 to 32k.
+ * <p>This class is mutable and not thread-safe.</p>
+ * @since 0.11
  */
-public interface Move {
-    /**
-     * Returns the slided version of the board.
-     * @param board The current board.
-     * @return The resulting board.
-     */
-    long slided(long board);
+public class BinaryBoardTable implements BoardTable {
+    @Override
+    public final long result(final Move move, final long board) {
+        return move.slided(board);
+    }
 }
