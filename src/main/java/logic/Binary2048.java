@@ -31,31 +31,25 @@ import java.util.Collection;
  */
 public class Binary2048 implements Game2048 {
     /**
-     * The map of this game.
+     * The board of this game.
      */
-    private final Map2048 map;
+    private final Board board;
 
     /**
      * Ctor.
-     * @param map The map of the game.
+     * @param board The board of the game.
      */
-    public Binary2048(final Map2048 map) {
-        this.map = map;
+    public Binary2048(final Board board) {
+        this.board = board;
     }
 
     @Override
     public final void play(final Move move) {
-        throw new IllegalArgumentException(
-            String.format(
-                "The chosen  move isn't possible. Map: %s, moves: %s",
-                this.map,
-                this.possibleMoves()
-            )
-        );
+        this.board.slide(move);
     }
 
     @Override
     public final Collection<Move> possibleMoves() {
-        return this.map.possibleMoves();
+        throw new UnsupportedOperationException("To be implemented");
     }
 }

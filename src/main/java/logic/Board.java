@@ -24,10 +24,11 @@ package logic;
 import java.util.Collection;
 
 /**
- * The map of the 2048 game.
+ * The board of the 2048 game. The size of it depends on the concrete
+ * implementation.
  * @since 0.2
  */
-public interface Map2048 {
+public interface Board {
     /**
      * Applies the given move if it's possible. Dependent on the implementation,
      * it may throw an exception otherwise.

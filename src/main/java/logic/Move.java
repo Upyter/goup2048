@@ -27,5 +27,23 @@ package logic;
  * @since 0.2
  */
 public enum Move {
+    /**
+     * The upwards sliding move.
+     */
+    UP,
 
+    /**
+     * The leftwards sliding move.
+     */
+    LEFT,
+
+    /**
+     * The rightwards sliding move.
+     */
+    RIGHT,
+
+    /**
+     * The downwards sliding move.
+     */
+    DOWN
 }
