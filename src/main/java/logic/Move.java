@@ -29,11 +29,11 @@ package logic;
  * @see Game2048
  * @since 0.2
  */
-public interface Move {
+public interface Move<T> {
     /**
      * Returns the slided version of the board.
      * @param board The current board.
      * @return The resulting board.
      */
-    long slided(long board);
+    long slided(T board);
 }

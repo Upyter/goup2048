@@ -24,12 +24,12 @@ package logic;
 import java.util.Collection;
 
 /**
- * A fast binary 2048 implementation. It uses pre calculated game states and
- * binary operation to switch its own state.
+ * A simple 2048 implementation. It's not fast, but aims to be easy to implement
+ * and understand.
  * <p>This class is mutable and not thread-safe.</p>
  * @since 0.2
  */
-public class Binary2048 implements Game2048 {
+public class Simple2048 implements Game2048 {
     /**
      * The board of this game.
      */
@@ -39,7 +39,7 @@ public class Binary2048 implements Game2048 {
      * Ctor.
      * @param board The board of the game.
      */
-    public Binary2048(final Board board) {
+    public Simple2048(final Board board) {
         this.board = board;
     }
 
