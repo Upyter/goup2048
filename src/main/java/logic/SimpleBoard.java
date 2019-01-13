@@ -26,46 +26,38 @@ import java.util.Iterator;
 import java.util.function.BiFunction;
 
 /**
- * The board of the 2048 game. The size of it depends on the concrete
- * implementation, but it has to be quadratic.
- * @since 0.2
+ * A simple 2048 board implementation. It aims to be easy implemented and
+ * readable.
+ * @since 0.13
  */
-public interface Board {
-    /**
-     * Returns the value at the given position.
-     * @param index The index of the value.
-     * @return The value at the index.
-     */
-    Field get(int index);
+public class SimpleBoard implements Board {
 
-    /**
-     * Returns the moves that are possible on the current map.
-     * @return The moves currently possible.
-     */
-    Collection<Move<Board>> possibleMoves();
+    @Override
+    public final Field get(final int index) {
+        throw new UnsupportedOperationException("#get()");
+    }
 
-    /**
-     * Returns the amount of the fields that this board has.
-     * @return The size of this board.
-     */
-    int size();
+    @Override
+    public final Collection<Move<Board>> possibleMoves() {
+        throw new UnsupportedOperationException("#possibleMoves()");
+    }
 
-    /**
-     * Returns the size of a row.
-     * @return The size of a row.
-     */
-    int rowSize();
+    @Override
+    public final int size() {
+        throw new UnsupportedOperationException("#size()");
+    }
 
-    /**
-     * Returns an iterator for filled fields.
-     * @param row The row to iterate through.
-     * @param cellFunction The function to transform the index into the concrete
-     *  cell.
-     * @return An iterator for filled fields.
-     * @checkstyle ParameterNameCheck (4 lines)
-     */
-    Iterator<Field> filled(
-        int row,
-        BiFunction<Integer, Integer, Integer> cellFunction
-    );
+    @Override
+    public final int rowSize() {
+        throw new UnsupportedOperationException("#rowSize()");
+    }
+
+    // @checkstyle ParameterNameCheck (4 lines)
+    @Override
+    public final Iterator<Field> filled(
+        final int row,
+        final BiFunction<Integer, Integer, Integer> cellFunction
+    ) {
+        throw new UnsupportedOperationException("#filled()");
+    }
 }

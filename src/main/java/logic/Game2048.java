@@ -23,6 +23,7 @@ package logic;
 
 /**
  * The 2048 game.
+ * @param <T> The type of the board that this game has.
  * @since 0.1
  */
 public interface Game2048<T> {

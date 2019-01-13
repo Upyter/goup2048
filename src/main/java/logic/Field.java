@@ -33,6 +33,17 @@ public interface Field {
     int number();
 
     /**
+     * Upgrades the field. Normally, this means the field will double its value.
+     * This should happen after merging two fields with the same value.
+     */
+    void upgrade();
+
+    /**
+     * Sets this field to be empty according to {@link #isEmpty(Field)}.
+     */
+    void clean();
+
+    /**
      * A field is empty when it has a {@link #number()} of 0.
      * @param field The field to check for emptiness.
      * @return True if the field is 0 and false otherwise.
@@ -40,5 +51,16 @@ public interface Field {
     @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
     static boolean isEmpty(final Field field) {
         return field.number() == 0;
+    }
+
+    /**
+     * A field is filled when it has a {@link #number()} != 0 which means that
+     * it's not empty according to {@link this#isEmpty(Field)}.
+     * @param field The field to check for fillness.
+     * @return True if the field isn't 0 and false otherwise.
+     */
+    @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
+    static boolean isFilled(final Field field) {
+        return !Field.isEmpty(field);
     }
 }

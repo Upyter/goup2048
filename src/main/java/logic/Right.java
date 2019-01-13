@@ -21,19 +21,36 @@
 
 package logic;
 
+import java.util.Iterator;
+
 /**
- * A table of a certain amount boards. The concrete amount depends on the
- * implementation. This table shall make it easier to get for example a
- * resulting board without doing the calculation.
- * @since 0.10
+ * A right move for the {@link SimpleBoard}.
+ * @since 0.13
  */
-public interface BoardTable {
-    /**
-     * Determines the resulting state when the given move would be applied to
-     * the given board.
-     * @param move The move that would be used for the next state.
-     * @param board The current state.
-     * @return The resulting board.
-     */
-    long result(Move move, long board);
+public class Right implements Move<Board> {
+
+    @Override
+    public final void push(final Board board) {
+        throw new UnsupportedOperationException("To be implemented");
+    }
+
+    @Override
+    public final void merge(final Board board) {
+        for (int row = 0; row < board.rowSize(); ++row) {
+            final Iterator<Field> filled = board.filled(
+                row,
+                (size, index) -> size - index - 1
+            );
+            while (filled.hasNext()) {
+                final var current = filled.next();
+                if (filled.hasNext()) {
+                    final var next = filled.next();
+                    if (current.equals(next)) {
+                        current.upgrade();
+                        next.clean();
+                    }
+                }
+            }
+        }
+    }
 }

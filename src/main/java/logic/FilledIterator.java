@@ -1,0 +1,133 @@
+/*
+ * Copyright 2019 Upyter
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+
+package logic;
+
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.function.BiFunction;
+
+/**
+ * An iterator that returns only the filled fields of a board.
+ * @see Board
+ * @since 0.14
+ */
+public class FilledIterator implements Iterator<Field> {
+    /**
+     * The board to iterate through.
+     */
+    private final Board board;
+
+    /**
+     * The row to iterate through.
+     */
+    private final int row;
+
+    /**
+     * The function to transform an index to the concrete cell.
+     * @checkstyle MemberName (2 lines)
+     */
+    private final BiFunction<Integer, Integer, Integer> cellFunction;
+
+    /**
+     * The cursor of the iteration. It stays one index behind the next element.
+     */
+    private int cursor;
+
+    /**
+     * Ctor.
+     * @param board The board to iterate through.
+     * @param row The row to iterate through.
+     * @param cellFunction The function to transform an index to the concrete
+     *  cell.
+     * @checkstyle ParameterNameCheck (5 lines)
+     */
+    public FilledIterator(
+        final Board board,
+        final int row,
+        final BiFunction<Integer, Integer, Integer> cellFunction
+    ) {
+        this.board = board;
+        this.row = row;
+        this.cellFunction = cellFunction;
+        this.cursor = -1;
+    }
+
+    // @checkstyle ReturnCount (3 lines)
+    @SuppressWarnings("PMD.OnlyOneReturn")
+    @Override
+    public final boolean hasNext() {
+        // @checkstyle LocalVariableName (1 line)
+        int nextCursor = this.cursor + 1;
+        while (nextCursor < this.board.rowSize()) {
+            if (
+                Field.isFilled(
+                    this.board.get(
+                        this.cellFunction.apply(
+                            this.board.size(),
+                            nextCursor
+                        )
+                    )
+                )
+            ) {
+                return true;
+            } else {
+                ++nextCursor;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public final Field next() {
+        if (!this.hasNext()) {
+            throw new NoSuchElementException(
+                String.join(
+                    "There is no filled field left",
+                    "inside the given board. ",
+                    "Board: ", this.board.toString(),
+                    ", Cursor: ", Integer.toString(this.cursor)
+                )
+            );
+        }
+        // @checkstyle LocalFinalVariableName (2 lines)
+        @SuppressWarnings("PMD.PrematureDeclaration")
+        final int startPoint = this.cursor;
+        do {
+            ++this.cursor;
+            final var field = this.board.get(
+                this.cellFunction.apply(this.board.size(), this.cursor)
+            );
+            if (Field.isFilled(field)) {
+                return field;
+            }
+        } while (this.cursor < this.board.rowSize());
+        throw new IllegalStateException(
+            String.join(
+                "Didn't find the next filled field, unexpectedly.",
+                "Started cursor from: ", Integer.toString(startPoint),
+                ", Current cursor: ", Integer.toString(this.cursor),
+                ", Board: ", this.board.toString(),
+                ", Row: ", Integer.toString(this.row)
+            )
+        );
+    }
+}

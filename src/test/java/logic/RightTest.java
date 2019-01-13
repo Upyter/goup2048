@@ -21,35 +21,31 @@
 
 package logic;
 
-import java.util.Collection;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
 
 /**
- * A simple 2048 implementation. It's not fast, but aims to be easy to implement
- * and understand.
- * <p>This class is mutable and not thread-safe.</p>
- * @since 0.2
+ * Tests for {@link Right}.
+ * @since 0.14
  */
-public class Simple2048 implements Game2048 {
+public class RightTest {
     /**
-     * The board of this game.
+     * Merging an empty board must be a no-op.
      */
-    private final Board board;
-
-    /**
-     * Ctor.
-     * @param board The board of the game.
-     */
-    public Simple2048(final Board board) {
-        this.board = board;
-    }
-
-    @Override
-    public final void play(final Move move) {
-        throw new UnsupportedOperationException("To be implemented");
-    }
-
-    @Override
-    public final Collection<Move> possibleMoves() {
-        throw new UnsupportedOperationException("To be implemented");
+    @Test
+    public void emptyLineMerge() {
+        final Board board = new Board(
+            new int[]{0, 0, 0, 0},
+            new int[]{0, 0, 0, 0},
+            new int[]{0, 0, 0, 0},
+            new int[]{0, 0, 0, 0}
+        );
+        MatcherAssert.assertThat(
+            new Right().slide(
+                board
+            ),
+            Matchers.equalTo(oldBoard)
+        );
     }
 }

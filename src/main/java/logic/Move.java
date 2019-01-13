@@ -26,14 +26,20 @@ package logic;
  * how to transform the board according to itself. To get a concrete move,
  * ask the game instance with {@link Game2048#possibleMoves()} and play one of
  * them.
+ * @param <T> The type of the board to apply the move to.
  * @see Game2048
  * @since 0.2
  */
 public interface Move<T> {
     /**
-     * Returns the slided version of the board.
-     * @param board The current board.
-     * @return The resulting board.
+     * Pushes the fields in the board (if possible).
+     * @param board The board to push the fields from.
      */
-    long slided(T board);
+    void push(T board);
+
+    /**
+     * Merges the fields in the board (if possible).
+     * @param board The board to merge the fields from.
+     */
+    void merge(T board);
 }

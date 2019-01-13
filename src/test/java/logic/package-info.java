@@ -19,37 +19,8 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-package logic;
-
-import java.util.Collection;
-
 /**
- * A simple 2048 implementation. It's not fast, but aims to be easy to implement
- * and understand.
- * <p>This class is mutable and not thread-safe.</p>
- * @since 0.2
+ * Tests for the 2048 game.
+ * @since 0.14
  */
-public class Simple2048 implements Game2048 {
-    /**
-     * The board of this game.
-     */
-    private final Board board;
-
-    /**
-     * Ctor.
-     * @param board The board of the game.
-     */
-    public Simple2048(final Board board) {
-        this.board = board;
-    }
-
-    @Override
-    public final void play(final Move move) {
-        throw new UnsupportedOperationException("To be implemented");
-    }
-
-    @Override
-    public final Collection<Move> possibleMoves() {
-        throw new UnsupportedOperationException("To be implemented");
-    }
-}
+package logic;
