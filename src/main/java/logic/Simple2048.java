@@ -29,7 +29,7 @@ import java.util.Collection;
  * <p>This class is mutable and not thread-safe.</p>
  * @since 0.2
  */
-public class Simple2048 implements Game2048 {
+public class Simple2048 implements Game2048<Board> {
     /**
      * The board of this game.
      */
@@ -44,12 +44,12 @@ public class Simple2048 implements Game2048 {
     }
 
     @Override
-    public final void play(final Move move) {
+    public final void play(final Move<Board> move) {
         throw new UnsupportedOperationException("To be implemented");
     }
 
     @Override
-    public final Collection<Move> possibleMoves() {
+    public final Collection<Move<Board>> possibleMoves() {
         throw new UnsupportedOperationException("To be implemented");
     }
 }
