@@ -24,17 +24,44 @@ package logic;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.function.BiFunction;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * A simple 2048 board implementation. It aims to be easy implemented and
  * readable.
+ * <p>This class is mutable and not thread-safe.</p>
  * @since 0.13
  */
+@EqualsAndHashCode
+@ToString
 public class SimpleBoard implements Board {
+    /**
+     * The fields of the board.
+     */
+    private final Field[] fields;
+
+    /**
+     * The amount of fields in a row.
+     * @checkstyle MemberName (3 lines)
+     */
+    @SuppressWarnings("PMD.AvoidFieldNameMatchingMethodName")
+    private final int rowSize;
+
+    /**
+     * Ctor.
+     * @param fields The fields of the board.
+     * @param rowSize The amount of fields in a row.
+     * @checkstyle ParameterName (2 lines)
+     */
+    public SimpleBoard(final Field[] fields, final int rowSize) {
+        this.fields = fields;
+        this.rowSize = rowSize;
+    }
 
     @Override
     public final Field get(final int index) {
-        throw new UnsupportedOperationException("#get()");
+        return this.fields[index];
     }
 
     @Override
@@ -44,12 +71,12 @@ public class SimpleBoard implements Board {
 
     @Override
     public final int size() {
-        throw new UnsupportedOperationException("#size()");
+        return this.fields.length;
     }
 
     @Override
     public final int rowSize() {
-        throw new UnsupportedOperationException("#rowSize()");
+        return this.rowSize;
     }
 
     // @checkstyle ParameterNameCheck (4 lines)
@@ -58,6 +85,6 @@ public class SimpleBoard implements Board {
         final int row,
         final BiFunction<Integer, Integer, Integer> cellFunction
     ) {
-        throw new UnsupportedOperationException("#filled()");
+        return new FilledIterator(this, row, cellFunction);
     }
 }

@@ -27,7 +27,7 @@
 
     <groupId>com.upyter.goup2048</groupId>
     <artifactId>goup2048</artifactId>
-    <version>0.14</version>
+    <version>0.15</version>
 
     <dependencies>
         <!-- utilities -->
@@ -36,6 +36,7 @@
             <artifactId>cactoos</artifactId>
             <version>0.38</version>
         </dependency>
+        <!-- testing -->
         <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-all</artifactId>
@@ -47,6 +48,13 @@
             <artifactId>junit</artifactId>
             <version>4.12</version>
             <scope>test</scope>
+        </dependency>
+        <!-- shortcut annotations -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.4</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

@@ -21,27 +21,44 @@
 
 package logic;
 
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-import org.junit.Test;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
- * Tests for {@link Right}.
- * @since 0.14
+ * A simple 2048 field implementation. It aims to be easy implemented and
+ * readable.
+ * <p>This class is mutable and not thread-safe.</p>
+ * @since 0.15
  */
-public final class RightTest {
+@EqualsAndHashCode
+@ToString
+public class SimpleField implements Field {
     /**
-     * Merging an empty board must be a no-op.
+     * The number of this field.
      */
-    @Test
-    public void emptyLineMerge() {
-        final Board board = new SimpleBoard();
-        new Right().merge(board);
-        MatcherAssert.assertThat(
-            board,
-            Matchers.equalTo(
-                new SimpleBoard()
-            )
-        );
+    @SuppressWarnings("PMD.AvoidFieldNameMatchingMethodName")
+    private int number;
+
+    /**
+     * Ctor.
+     * @param number The number of this field.
+     */
+    public SimpleField(final int number) {
+        this.number = number;
+    }
+
+    @Override
+    public final int number() {
+        return this.number;
+    }
+
+    @Override
+    public final void upgrade() {
+        this.number <<= 2;
+    }
+
+    @Override
+    public final void clean() {
+        this.number = 0;
     }
 }

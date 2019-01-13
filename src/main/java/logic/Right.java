@@ -28,7 +28,6 @@ import java.util.Iterator;
  * @since 0.13
  */
 public class Right implements Move<Board> {
-
     @Override
     public final void push(final Board board) {
         throw new UnsupportedOperationException("To be implemented");
