@@ -59,9 +59,10 @@ public class SimpleField implements Field {
         return this.number;
     }
 
+    // @checkstyle HiddenField (2 lines)
     @Override
-    public final void upgrade() {
-        this.number *= 2;
+    public final void number(final int number) {
+        this.number = number;
     }
 
     @Override

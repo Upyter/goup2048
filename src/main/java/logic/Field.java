@@ -33,10 +33,10 @@ public interface Field {
     int number();
 
     /**
-     * Upgrades the field. Normally, this means the field will double its value.
-     * This should happen after merging two fields with the same value.
+     * Replaces the number of this field with the given number.
+     * @param number The number that this field will take.
      */
-    void upgrade();
+    void number(int number);
 
     /**
      * Sets this field to be empty according to {@link #isEmpty(Field)}.
@@ -62,5 +62,27 @@ public interface Field {
     @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
     static boolean isFilled(final Field field) {
         return !Field.isEmpty(field);
+    }
+
+    /**
+     * Doubles the number of the field. This should happen after merging two
+     * fields with the same value.
+     * @param field The field that will get the doubled number.
+     */
+    @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
+    static void upgrade(final Field field) {
+        field.number(field.number() * 2);
+    }
+
+    /**
+     * Swaps the numbers of the fields.
+     * @param first The first field.
+     * @param second The second field.
+     */
+    @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
+    static void swap(final Field first, final Field second) {
+        final int temp = first.number();
+        first.number(second.number());
+        second.number(temp);
     }
 }

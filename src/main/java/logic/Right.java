@@ -30,7 +30,24 @@ import java.util.Iterator;
 public class Right implements Move<Board> {
     @Override
     public final void push(final Board board) {
-        throw new UnsupportedOperationException("To be implemented");
+        for (int row = 0; row < board.rowSize(); ++row) {
+            for (int cell = 0; cell < board.rowSize(); ++cell) {
+                final Field current = board.get(cell);
+                if (Field.isEmpty(current)) {
+                    final int temp = cell;
+                    final Iterator<Field> filled = board.filled(
+                        row,
+                        (size, index) -> size - index - 1 - temp - 1
+                    );
+                    if (filled.hasNext()) {
+                        Field.swap(
+                            current,
+                            filled.next()
+                        );
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -45,7 +62,7 @@ public class Right implements Move<Board> {
                 if (filled.hasNext()) {
                     final var next = filled.next();
                     if (current.equals(next)) {
-                        current.upgrade();
+                        Field.upgrade(current);
                         next.clean();
                     }
                 }

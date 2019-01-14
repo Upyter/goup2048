@@ -66,7 +66,7 @@ public final class FieldTest {
     public void upgradeSomeNum() {
         final var num = 43;
         final Field field = new SimpleField(num);
-        field.upgrade();
+        Field.upgrade(field);
         MatcherAssert.assertThat(field.number(), Matchers.equalTo(num * 2));
     }
 }
