@@ -191,4 +191,61 @@ public final class RightTest {
             )
         );
     }
+
+    /**
+     * {@link Right#merge(Board)} with three mergeable fields next to each other
+     * must result in two fields merged (the fields on the right side) and
+     * leaving the left like it is.
+     */
+    @Test
+    public void threeFieldsMerge() {
+        final var num = 3;
+        final Board board = new SimpleBoard(
+            new SimpleField(num), new SimpleField(num), new SimpleField(num),
+            new SimpleField(), new SimpleField(), new SimpleField(),
+            new SimpleField(), new SimpleField(), new SimpleField()
+        );
+        new Right().merge(board);
+        MatcherAssert.assertThat(
+            board,
+            Matchers.equalTo(
+                new SimpleBoard(
+                    new SimpleField(num), new SimpleField(),
+                    new SimpleField(num * 2),
+                    new SimpleField(), new SimpleField(),
+                    new SimpleField(),
+                    new SimpleField(), new SimpleField(),
+                    new SimpleField()
+                )
+            )
+        );
+    }
+
+    /**
+     * {@link Right#merge(Board)} with multiple mergeable lines must be merged
+     * correctly.
+     */
+    @Test
+    public void multipleRowMerge() {
+        final var num = 3;
+        final Board board = new SimpleBoard(
+            new SimpleField(num), new SimpleField(num), new SimpleField(),
+            new SimpleField(), new SimpleField(num), new SimpleField(num),
+            new SimpleField(num), new SimpleField(num), new SimpleField(num)
+        );
+        new Right().merge(board);
+        MatcherAssert.assertThat(
+            board,
+            Matchers.equalTo(
+                new SimpleBoard(
+                    new SimpleField(), new SimpleField(num * 2),
+                    new SimpleField(),
+                    new SimpleField(), new SimpleField(),
+                    new SimpleField(num * 2),
+                    new SimpleField(num), new SimpleField(),
+                    new SimpleField(num * 2)
+                )
+            )
+        );
+    }
 }
