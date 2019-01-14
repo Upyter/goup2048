@@ -21,51 +21,39 @@
 
 package logic;
 
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-
 /**
- * A simple 2048 field implementation. It aims to be easy implemented and
- * readable.
- * <p>This class is mutable and not thread-safe.</p>
- * @since 0.15
+ * Utility class to calculate square roots.
+ * @since 0.16
  */
-@EqualsAndHashCode
-@ToString
-public class SimpleField implements Field {
+public final class SquareRoot {
     /**
-     * The number of this field.
+     * Private ctor to prevent construction.
      */
-    @SuppressWarnings("PMD.AvoidFieldNameMatchingMethodName")
-    private int number;
+    private SquareRoot() { }
 
     /**
-     * Ctor. Creates an empty field (number = 0).
+     * Returns the square root of an integer and returns it as an integer.
+     * This method assumes that the square root of the given number can be
+     * calculated without left overs.
+     * @param number The number to calculate the square root from. It has to be
+     *  >= 0.
+     * @return The square root of the given number.
+     * @throws IllegalArgumentException If the given number is negative.
      */
-    public SimpleField() {
-        this(0);
-    }
-
-    /**
-     * Ctor.
-     * @param number The number of this field.
-     */
-    public SimpleField(final int number) {
-        this.number = number;
-    }
-
-    @Override
-    public final int number() {
-        return this.number;
-    }
-
-    @Override
-    public final void upgrade() {
-        this.number <<= 2;
-    }
-
-    @Override
-    public final void clean() {
-        this.number = 0;
+    @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
+    public static int root(final int number) {
+        if (number < 0) {
+            throw new IllegalArgumentException(
+                String.format(
+                    "Number must be positive but is %d",
+                    number
+                )
+            );
+        }
+        int sqrt = -1;
+        do {
+            ++sqrt;
+        } while (sqrt * sqrt <= number);
+        return sqrt - 1;
     }
 }

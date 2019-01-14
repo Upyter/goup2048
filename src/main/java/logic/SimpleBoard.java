@@ -21,6 +21,7 @@
 
 package logic;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.function.BiFunction;
@@ -42,21 +43,26 @@ public class SimpleBoard implements Board {
     private final Field[] fields;
 
     /**
-     * The amount of fields in a row.
-     * @checkstyle MemberName (3 lines)
+     * Ctor for test purposes. Creates a 4x4 (16 fields) board of empty fields..
      */
-    @SuppressWarnings("PMD.AvoidFieldNameMatchingMethodName")
-    private final int rowSize;
+    public SimpleBoard() {
+        this(
+            new SimpleField(0), new SimpleField(0), new SimpleField(0),
+            new SimpleField(0), new SimpleField(0), new SimpleField(0),
+            new SimpleField(0), new SimpleField(0), new SimpleField(0),
+            new SimpleField(0), new SimpleField(0), new SimpleField(0),
+            new SimpleField(0), new SimpleField(0), new SimpleField(0),
+            new SimpleField(0)
+        );
+    }
 
     /**
      * Ctor.
      * @param fields The fields of the board.
-     * @param rowSize The amount of fields in a row.
      * @checkstyle ParameterName (2 lines)
      */
-    public SimpleBoard(final Field[] fields, final int rowSize) {
-        this.fields = fields;
-        this.rowSize = rowSize;
+    public SimpleBoard(final Field... fields) {
+        this.fields = Arrays.copyOf(fields, fields.length);
     }
 
     @Override
@@ -76,7 +82,7 @@ public class SimpleBoard implements Board {
 
     @Override
     public final int rowSize() {
-        return this.rowSize;
+        return SquareRoot.root(this.fields.length);
     }
 
     // @checkstyle ParameterNameCheck (4 lines)
