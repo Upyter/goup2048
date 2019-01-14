@@ -32,6 +32,7 @@ import org.junit.Test;
  * A test for {@link FilledIterator}.
  * @since 0.16
  */
+@SuppressWarnings("PMD.TooManyMethods")
 public final class FilledIteratorTest {
     /**
      * {@link FilledIterator#hasNext()} must return false for a board with no
@@ -268,9 +269,10 @@ public final class FilledIteratorTest {
      */
     @Test
     public void hasNextReversedSingleField() {
+        final var num = 4;
         MatcherAssert.assertThat(
             new SimpleBoard(
-                new SimpleField(4)
+                new SimpleField(num)
             ).filled(
                 0, (size, index) -> size - index - 1
             ).hasNext(),
@@ -285,7 +287,7 @@ public final class FilledIteratorTest {
      * to create a reversed iteration.
      */
     @Test
-    public void NotHasNextReversedSingleField() {
+    public void notHasNextReversedSingleField() {
         MatcherAssert.assertThat(
             new SimpleBoard(
                 new SimpleField()
@@ -304,9 +306,11 @@ public final class FilledIteratorTest {
      */
     @Test
     public void hasNextReversedMultipleFields() {
+        final var first = 4;
+        final var second = 52;
         MatcherAssert.assertThat(
             new SimpleBoard(
-                new SimpleField(4), new SimpleField(52),
+                new SimpleField(first), new SimpleField(second),
                 new SimpleField(), new SimpleField()
             ).filled(
                 0, (size, index) -> size - index - 1
@@ -321,6 +325,6 @@ public final class FilledIteratorTest {
      */
     @Test
     public void vertical() {
-
+        throw new UnsupportedOperationException("To be implemented");
     }
 }

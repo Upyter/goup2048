@@ -62,7 +62,7 @@ public class FilledIterator implements Iterator<Field> {
      *  cell. Example:
      *  <pre>{@code (index, rowSize) -> index; // normal order}</pre>
      *  <pre>{@code (index, rowSize) -> size - 1 - index; // reversed order}
-     *  <\pre>
+     *  </pre>
      * @checkstyle ParameterNameCheck (5 lines)
      */
     public FilledIterator(
@@ -109,20 +109,10 @@ public class FilledIterator implements Iterator<Field> {
                     "",
                     "There is no filled field left ",
                     "inside the given board. ",
-                    "\nBoard: \n", this.board.toString(),
-                    " \nCursor: ", Integer.toString(this.cursor),
-                    "\nApplied with given function: ",
-                    Integer.toString(
-                        this.cellFunction.apply(
-                            this.board.rowSize(), this.cursor
-                        )
-                    )
+                    this.errorInformation()
                 )
             );
         }
-        // @checkstyle LocalFinalVariableName (2 lines)
-        @SuppressWarnings("PMD.PrematureDeclaration")
-        final int startPoint = this.cursor;
         do {
             ++this.cursor;
             final var field = this.board.get(
@@ -139,19 +129,25 @@ public class FilledIterator implements Iterator<Field> {
             String.join(
                 "",
                 "Didn't find the next filled field, unexpectedly.",
-                "\nStarted cursor from: ", Integer.toString(startPoint),
-                "\nApplied with given function: ",
-                Integer.toString(
-                    this.cellFunction.apply(this.board.rowSize(), startPoint)
-                ),
-                "\nCurrent cursor: ", Integer.toString(this.cursor),
-                "\nApplied with given function: ",
-                Integer.toString(
-                    this.cellFunction.apply(this.board.rowSize(), this.cursor)
-                ),
-                "\nBoard:\n", this.board.toString(),
-                "\nRow: ", Integer.toString(this.row)
+                this.errorInformation()
             )
+        );
+    }
+
+    /**
+     * Creates a string regarding the iterator for exceptional purposes.
+     * @return A string containing the cursor, the transformed cursor, the
+     *  board and the row.
+     */
+    private String errorInformation() {
+        return String.join(
+            "\nCurrent cursor: ", Integer.toString(this.cursor),
+            "\nApplied with given function: ",
+            Integer.toString(
+                this.cellFunction.apply(this.board.rowSize(), this.cursor)
+            ),
+            "\nBoard:\n", this.board.toString(),
+            "\nRow: ", Integer.toString(this.row)
         );
     }
 }
