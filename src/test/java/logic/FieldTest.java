@@ -21,51 +21,52 @@
 
 package logic;
 
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
 
 /**
- * A simple 2048 field implementation. It aims to be easy implemented and
- * readable.
- * <p>This class is mutable and not thread-safe.</p>
- * @since 0.15
+ * Tests for {@link Field}.
+ * @since 0.17
  */
-@EqualsAndHashCode
-@ToString
-public class SimpleField implements Field {
+public final class FieldTest {
     /**
-     * The number of this field.
+     * {@link SimpleField#equals(Object)} must return true if two fields have
+     * the same number.
      */
-    @SuppressWarnings("PMD.AvoidFieldNameMatchingMethodName")
-    private int number;
-
-    /**
-     * Ctor. Creates an empty field (number = 0).
-     */
-    public SimpleField() {
-        this(0);
+    @Test
+    public void sameNumEqual() {
+        final var num = 132;
+        MatcherAssert.assertThat(
+            new SimpleField(num), Matchers.equalTo(new SimpleField(num))
+        );
     }
 
     /**
-     * Ctor.
-     * @param number The number of this field.
+     * {@link SimpleField#equals(Object)} must return false if two fields have
+     * different numbers.
      */
-    public SimpleField(final int number) {
-        this.number = number;
+    @Test
+    public void differentNumUnEqual() {
+        final var first = 324;
+        final var second = 23;
+        MatcherAssert.assertThat(
+            new SimpleField(first),
+            Matchers.not(
+                Matchers.equalTo(new SimpleField(second))
+            )
+        );
     }
 
-    @Override
-    public final int number() {
-        return this.number;
-    }
-
-    @Override
-    public final void upgrade() {
-        this.number *= 2;
-    }
-
-    @Override
-    public final void clean() {
-        this.number = 0;
+    /**
+     * {@link SimpleField#upgrade()} must double the number of a field with some
+     * number > 0.
+     */
+    @Test
+    public void upgradeSomeNum() {
+        final var num = 43;
+        final Field field = new SimpleField(num);
+        field.upgrade();
+        MatcherAssert.assertThat(field.number(), Matchers.equalTo(num * 2));
     }
 }

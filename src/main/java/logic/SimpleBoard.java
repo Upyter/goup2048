@@ -23,10 +23,10 @@ package logic;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.function.BiFunction;
 import lombok.EqualsAndHashCode;
-import lombok.ToString;
 
 /**
  * A simple 2048 board implementation. It aims to be easy implemented and
@@ -35,7 +35,6 @@ import lombok.ToString;
  * @since 0.13
  */
 @EqualsAndHashCode
-@ToString
 public class SimpleBoard implements Board {
     /**
      * The fields of the board.
@@ -67,6 +66,20 @@ public class SimpleBoard implements Board {
 
     @Override
     public final Field get(final int index) {
+        if (this.fields.length <= index) {
+            throw new IllegalArgumentException(
+                String.format(
+                    String.join(
+                        "",
+                        "Index must be smaller than the number of fields on ",
+                        "this board. Index: %d, Size: %d, Board: \n%s"
+                    ),
+                    index,
+                    this.fields.length,
+                    this.toString()
+                )
+            );
+        }
         return this.fields[index];
     }
 
@@ -92,5 +105,40 @@ public class SimpleBoard implements Board {
         final BiFunction<Integer, Integer, Integer> cellFunction
     ) {
         return new FilledIterator(this, row, cellFunction);
+    }
+
+    @Override
+    public final String toString() {
+        final var result = new StringBuilder();
+        final int width = Digits.number(
+            Arrays.stream(this.fields).max(
+                Comparator.comparingInt(
+                    field -> Digits.number(field.number())
+                )
+            ).orElseThrow().number()
+        );
+        // @checkstyle LocalFinalVariableName (2 lines)
+        final int rowSize = this.rowSize();
+        final int rowAmount = this.fields.length / rowSize;
+        for (int row = 0; row < rowAmount; ++row) {
+            result.append('[');
+            for (
+                int cell = row * rowSize;
+                cell < row * rowSize + rowSize;
+                ++cell
+            ) {
+                // @checkstyle StringLiteralsConcatenation (3 line)
+                result.append(
+                    String.format(
+                        "%1$" + width + 'd',
+                        this.fields[cell].number()
+                    )
+                ).append('|');
+            }
+            result.deleteCharAt(result.length() -  1);
+            result.append("]\n");
+        }
+        result.deleteCharAt(result.length() -  1);
+        return result.toString();
     }
 }

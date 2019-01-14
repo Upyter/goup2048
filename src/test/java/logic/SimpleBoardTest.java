@@ -21,51 +21,39 @@
 
 package logic;
 
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
 
 /**
- * A simple 2048 field implementation. It aims to be easy implemented and
- * readable.
- * <p>This class is mutable and not thread-safe.</p>
- * @since 0.15
+ * Tests for {@link SimpleBoard}.
+ * @since 0.17
  */
-@EqualsAndHashCode
-@ToString
-public class SimpleField implements Field {
+public final class SimpleBoardTest {
     /**
-     * The number of this field.
+     * {@link SimpleBoard#toString()} must return the correct string for a 2x2
+     * board with some random fields.
      */
-    @SuppressWarnings("PMD.AvoidFieldNameMatchingMethodName")
-    private int number;
-
-    /**
-     * Ctor. Creates an empty field (number = 0).
-     */
-    public SimpleField() {
-        this(0);
-    }
-
-    /**
-     * Ctor.
-     * @param number The number of this field.
-     */
-    public SimpleField(final int number) {
-        this.number = number;
-    }
-
-    @Override
-    public final int number() {
-        return this.number;
-    }
-
-    @Override
-    public final void upgrade() {
-        this.number *= 2;
-    }
-
-    @Override
-    public final void clean() {
-        this.number = 0;
+    @Test
+    public void someBoardTwoXTwoToString() {
+        final var first = 23;
+        final var second = 54;
+        final var third = 232;
+        final var fourth = 283;
+        MatcherAssert.assertThat(
+            new SimpleBoard(
+                new SimpleField(first), new SimpleField(second),
+                new SimpleField(third), new SimpleField(fourth)
+            ),
+            Matchers.hasToString(
+                String.format(
+                    "[ %d| %d]\n[%d|%d]",
+                    first,
+                    second,
+                    third,
+                    fourth
+                )
+            )
+        );
     }
 }

@@ -31,7 +31,7 @@ import org.junit.Test;
  */
 public final class RightTest {
     /**
-     * Merging an empty board must be a no-op.
+     * {@link Right#merge(Board)} with an empty board must be a no-op.
      */
     @Test
     public void emptyLineMerge() {
@@ -41,6 +41,153 @@ public final class RightTest {
             board,
             Matchers.equalTo(
                 new SimpleBoard()
+            )
+        );
+    }
+
+    /**
+     * {@link Right#merge(Board)} with one filled field must be a no-op.
+     */
+    @Test
+    public void oneFilledMerge() {
+        final var num = 2;
+        final Board board = new SimpleBoard(
+            new SimpleField(num), new SimpleField(),
+            new SimpleField(), new SimpleField()
+        );
+        new Right().merge(board);
+        MatcherAssert.assertThat(
+            board,
+            Matchers.equalTo(
+                new SimpleBoard(
+                    new SimpleField(num), new SimpleField(),
+                    new SimpleField(), new SimpleField()
+                )
+            )
+        );
+    }
+
+    /**
+     * {@link Right#merge(Board)} with multiple filled but non mergeable fields
+     * must be a no-op.
+     */
+    @Test
+    public void multipleNonMergeable() {
+        final var num = 2;
+        final var other = 5;
+        final Board board = new SimpleBoard(
+            new SimpleField(num), new SimpleField(other),
+            new SimpleField(), new SimpleField()
+        );
+        new Right().merge(board);
+        MatcherAssert.assertThat(
+            board,
+            Matchers.equalTo(
+                new SimpleBoard(
+                    new SimpleField(num), new SimpleField(other),
+                    new SimpleField(), new SimpleField()
+                )
+            )
+        );
+    }
+
+    /**
+     * {@link Right#merge(Board)} with two mergeable fields next to each other
+     * must result in a correct merge.
+     */
+    @Test
+    public void twoFieldsNeighboursMerge() {
+        final var num = 2;
+        final Board board = new SimpleBoard(
+            new SimpleField(num), new SimpleField(num),
+            new SimpleField(), new SimpleField()
+        );
+        new Right().merge(board);
+        MatcherAssert.assertThat(
+            board,
+            Matchers.equalTo(
+                new SimpleBoard(
+                    new SimpleField(), new SimpleField(num * 2),
+                    new SimpleField(), new SimpleField()
+                )
+            )
+        );
+    }
+
+    /**
+     * {@link Right#merge(Board)} with two mergeable fields with an empty field
+     * in between must result in a correct merge.
+     */
+    @Test
+    public void twoFieldsGabMerge() {
+        final var num = 6;
+        final Board board = new SimpleBoard(
+            new SimpleField(num), new SimpleField(), new SimpleField(num),
+            new SimpleField(), new SimpleField(), new SimpleField(),
+            new SimpleField(), new SimpleField(), new SimpleField()
+        );
+        new Right().merge(board);
+        MatcherAssert.assertThat(
+            board,
+            Matchers.equalTo(
+                new SimpleBoard(
+                    new SimpleField(), new SimpleField(),
+                    new SimpleField(num * 2),
+                    new SimpleField(), new SimpleField(), new SimpleField(),
+                    new SimpleField(), new SimpleField(), new SimpleField()
+                )
+            )
+        );
+    }
+
+    /**
+     * {@link Right#merge(Board)} with two mergeable fields that have a non
+     * empty field in between must be a no-op.
+     */
+    @Test
+    public void twoFieldsBreakerMerge() {
+        final var num = 4;
+        final var other = 7;
+        final Board board = new SimpleBoard(
+            new SimpleField(num), new SimpleField(other), new SimpleField(num),
+            new SimpleField(), new SimpleField(), new SimpleField(),
+            new SimpleField(), new SimpleField(), new SimpleField()
+        );
+        new Right().merge(board);
+        MatcherAssert.assertThat(
+            board,
+            Matchers.equalTo(
+                new SimpleBoard(
+                    new SimpleField(num), new SimpleField(other),
+                    new SimpleField(num),
+                    new SimpleField(), new SimpleField(), new SimpleField(),
+                    new SimpleField(), new SimpleField(), new SimpleField()
+                )
+            )
+        );
+    }
+
+    /**
+     * {@link Right#merge(Board)} with two mergeable fields that are next to
+     * each other but on different lines must be a no-op.
+     */
+    @Test
+    public void twoMergeableFieldsDistinctRows() {
+        final var num = 3;
+        final Board board = new SimpleBoard(
+            new SimpleField(), new SimpleField(), new SimpleField(num),
+            new SimpleField(num), new SimpleField(), new SimpleField(),
+            new SimpleField(), new SimpleField(), new SimpleField()
+        );
+        new Right().merge(board);
+        MatcherAssert.assertThat(
+            board,
+            Matchers.equalTo(
+                new SimpleBoard(
+                    new SimpleField(), new SimpleField(), new SimpleField(num),
+                    new SimpleField(num), new SimpleField(), new SimpleField(),
+                    new SimpleField(), new SimpleField(), new SimpleField()
+                )
             )
         );
     }

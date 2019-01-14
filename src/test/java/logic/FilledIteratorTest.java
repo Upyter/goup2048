@@ -23,6 +23,7 @@ package logic;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.function.BiFunction;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -182,5 +183,144 @@ public final class FilledIteratorTest {
         new SimpleBoard().filled(
             0, (size, index) -> index
         ).next();
+    }
+
+    /**
+     * With {@link FilledIterator#FilledIterator(Board, int, BiFunction)} one
+     * can produce a reversed iteration.
+     */
+    @Test
+    public void reversed() {
+        final var fields = new Field[]{
+            new SimpleField(16), new SimpleField(21), new SimpleField(6),
+            new SimpleField(), new SimpleField(), new SimpleField(),
+            new SimpleField(), new SimpleField(), new SimpleField(),
+        };
+        final var board = new SimpleBoard(fields);
+        final var filled = new FilledIterator(
+            board,
+            0,
+            (size, index) -> size - index - 1
+        );
+        for (int cell = board.rowSize(); cell <= 0; ++cell) {
+            MatcherAssert.assertThat(
+                filled.next(),
+                Matchers.equalTo(fields[cell])
+            );
+        }
+    }
+
+    /**
+     * With {@link FilledIterator#FilledIterator(Board, int, BiFunction)} one
+     * can produce an iteration that starts from a row that is not the first.
+     */
+    @Test
+    public void nonFirstRow() {
+        final var fields = new Field[]{
+            new SimpleField(), new SimpleField(), new SimpleField(),
+            new SimpleField(43), new SimpleField(423), new SimpleField(45),
+            new SimpleField(), new SimpleField(), new SimpleField(),
+        };
+        final var board = new SimpleBoard(fields);
+        final var filled = new FilledIterator(
+            board,
+            1,
+            (size, index) -> index
+        );
+        for (int cell = board.rowSize(); cell < board.rowSize() * 2; ++cell) {
+            MatcherAssert.assertThat(
+                filled.next(),
+                Matchers.equalTo(fields[cell])
+            );
+        }
+    }
+
+    /**
+     * {@link FilledIterator#hasNext()} must return true for a board with
+     * multiple fields when
+     * {@link FilledIterator#FilledIterator(Board, int, BiFunction)} is used
+     * to create an iteration that starts from a row that is not the first.
+     */
+    @Test
+    public void nonFirstRowHasNext() {
+        final var fields = new Field[]{
+            new SimpleField(), new SimpleField(), new SimpleField(),
+            new SimpleField(1), new SimpleField(), new SimpleField(),
+            new SimpleField(), new SimpleField(), new SimpleField(),
+        };
+        final var board = new SimpleBoard(fields);
+        final var filled = new FilledIterator(
+            board,
+            1,
+            (size, index) -> index
+        );
+        MatcherAssert.assertThat(
+            filled.hasNext(),
+            Matchers.is(true)
+        );
+    }
+
+    /**
+     * {@link FilledIterator#hasNext()} must return true for a board with only
+     * one field when
+     * {@link FilledIterator#FilledIterator(Board, int, BiFunction)} is used
+     * to create a reversed iteration.
+     */
+    @Test
+    public void hasNextReversedSingleField() {
+        MatcherAssert.assertThat(
+            new SimpleBoard(
+                new SimpleField(4)
+            ).filled(
+                0, (size, index) -> size - index - 1
+            ).hasNext(),
+            Matchers.is(true)
+        );
+    }
+
+    /**
+     * {@link FilledIterator#hasNext()} must return false for a board with only
+     * one empty field when
+     * {@link FilledIterator#FilledIterator(Board, int, BiFunction)} is used
+     * to create a reversed iteration.
+     */
+    @Test
+    public void NotHasNextReversedSingleField() {
+        MatcherAssert.assertThat(
+            new SimpleBoard(
+                new SimpleField()
+            ).filled(
+                0, (size, index) -> size - index - 1
+            ).hasNext(),
+            Matchers.is(false)
+        );
+    }
+
+    /**
+     * {@link FilledIterator#hasNext()} must return true for a board with
+     * multiple fields when
+     * {@link FilledIterator#FilledIterator(Board, int, BiFunction)} is used
+     * to create a reversed iteration.
+     */
+    @Test
+    public void hasNextReversedMultipleFields() {
+        MatcherAssert.assertThat(
+            new SimpleBoard(
+                new SimpleField(4), new SimpleField(52),
+                new SimpleField(), new SimpleField()
+            ).filled(
+                0, (size, index) -> size - index - 1
+            ).hasNext(),
+            Matchers.is(true)
+        );
+    }
+
+    /**
+     * With {@link FilledIterator#FilledIterator(Board, int, BiFunction)} one
+     * can produce a vertical iteration.
+     */
+    @Test
+    public void vertical() {
+
     }
 }

@@ -27,6 +27,7 @@ import java.util.function.BiFunction;
 
 /**
  * An iterator that returns only the filled fields of a board.
+ * <p>This class is mutable and not thread-safe.</p>
  * @see Board
  * @since 0.14
  */
@@ -57,7 +58,11 @@ public class FilledIterator implements Iterator<Field> {
      * @param board The board to iterate through.
      * @param row The row to iterate through.
      * @param cellFunction The function to transform an index to the concrete
-     *  cell.
+     *  cell. It gets the current index and the size of a row to return the
+     *  cell. Example:
+     *  <pre>{@code (index, rowSize) -> index; // normal order}</pre>
+     *  <pre>{@code (index, rowSize) -> size - 1 - index; // reversed order}
+     *  <\pre>
      * @checkstyle ParameterNameCheck (5 lines)
      */
     public FilledIterator(
@@ -82,9 +87,9 @@ public class FilledIterator implements Iterator<Field> {
                 Field.isFilled(
                     this.board.get(
                         this.cellFunction.apply(
-                            this.board.size(),
+                            this.board.rowSize(),
                             nextCursor
-                        )
+                        ) + this.row * this.board.rowSize()
                     )
                 )
             ) {
@@ -101,10 +106,17 @@ public class FilledIterator implements Iterator<Field> {
         if (!this.hasNext()) {
             throw new NoSuchElementException(
                 String.join(
-                    "There is no filled field left",
+                    "",
+                    "There is no filled field left ",
                     "inside the given board. ",
-                    "Board: ", this.board.toString(),
-                    ", Cursor: ", Integer.toString(this.cursor)
+                    "\nBoard: \n", this.board.toString(),
+                    " \nCursor: ", Integer.toString(this.cursor),
+                    "\nApplied with given function: ",
+                    Integer.toString(
+                        this.cellFunction.apply(
+                            this.board.rowSize(), this.cursor
+                        )
+                    )
                 )
             );
         }
@@ -114,7 +126,10 @@ public class FilledIterator implements Iterator<Field> {
         do {
             ++this.cursor;
             final var field = this.board.get(
-                this.cellFunction.apply(this.board.size(), this.cursor)
+                this.cellFunction.apply(
+                    this.board.rowSize(),
+                    this.cursor
+                ) + this.row * this.board.rowSize()
             );
             if (Field.isFilled(field)) {
                 return field;
@@ -122,11 +137,20 @@ public class FilledIterator implements Iterator<Field> {
         } while (this.cursor < this.board.rowSize());
         throw new IllegalStateException(
             String.join(
+                "",
                 "Didn't find the next filled field, unexpectedly.",
-                "Started cursor from: ", Integer.toString(startPoint),
-                ", Current cursor: ", Integer.toString(this.cursor),
-                ", Board: ", this.board.toString(),
-                ", Row: ", Integer.toString(this.row)
+                "\nStarted cursor from: ", Integer.toString(startPoint),
+                "\nApplied with given function: ",
+                Integer.toString(
+                    this.cellFunction.apply(this.board.rowSize(), startPoint)
+                ),
+                "\nCurrent cursor: ", Integer.toString(this.cursor),
+                "\nApplied with given function: ",
+                Integer.toString(
+                    this.cellFunction.apply(this.board.rowSize(), this.cursor)
+                ),
+                "\nBoard:\n", this.board.toString(),
+                "\nRow: ", Integer.toString(this.row)
             )
         );
     }
