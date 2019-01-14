@@ -26,19 +26,35 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 
 /**
- * Tests for {@link Field}.
- * @since 18.1
+ * Tests for {@link SimpleField}.
+ * @since 0.17
  */
-public final class FieldTest {
+public final class SimpleFieldTest {
     /**
-     * {@link Field#upgrade(Field)} must double the number of a field with some
-     * number > 0.
+     * {@link SimpleField#equals(Object)} must return true if two fields have
+     * the same number.
      */
     @Test
-    public void upgradeSomeNum() {
-        final var num = 43;
-        final Field field = new SimpleField(num);
-        Field.upgrade(field);
-        MatcherAssert.assertThat(field.number(), Matchers.equalTo(num * 2));
+    public void sameNumEqual() {
+        final var num = 132;
+        MatcherAssert.assertThat(
+            new SimpleField(num), Matchers.equalTo(new SimpleField(num))
+        );
+    }
+
+    /**
+     * {@link SimpleField#equals(Object)} must return false if two fields have
+     * different numbers.
+     */
+    @Test
+    public void differentNumUnEqual() {
+        final var first = 324;
+        final var second = 23;
+        MatcherAssert.assertThat(
+            new SimpleField(first),
+            Matchers.not(
+                Matchers.equalTo(new SimpleField(second))
+            )
+        );
     }
 }
