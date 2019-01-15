@@ -272,18 +272,16 @@ public final class RightTest {
     public void oneFilledPush() {
         final int num = 4;
         final Board board = new SimpleBoard(
-            new SimpleField(num), new SimpleField(), new SimpleField(),
-            new SimpleField(), new SimpleField(), new SimpleField(),
-            new SimpleField(), new SimpleField(), new SimpleField()
+            new SimpleField(num), new SimpleField(),
+            new SimpleField(), new SimpleField()
         );
         new Right().push(board);
         MatcherAssert.assertThat(
             board,
             Matchers.equalTo(
                 new SimpleBoard(
-                    new SimpleField(), new SimpleField(), new SimpleField(num),
-                    new SimpleField(), new SimpleField(), new SimpleField(),
-                    new SimpleField(), new SimpleField(), new SimpleField()
+                    new SimpleField(), new SimpleField(num),
+                    new SimpleField(), new SimpleField()
                 )
             )
         );

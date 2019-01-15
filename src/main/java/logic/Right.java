@@ -31,13 +31,17 @@ public class Right implements Move<Board> {
     @Override
     public final void push(final Board board) {
         for (int row = 0; row < board.rowSize(); ++row) {
-            for (int cell = board.rowSize() - 1; cell > 0; ++cell) {
+            for (
+                int cell = (row + 1) * board.rowSize() - 1;
+                cell > board.rowSize() * row;
+                --cell
+            ) {
                 final Field current = board.field(cell);
                 if (Field.isEmpty(current)) {
                     final int temp = cell;
                     final Iterator<Field> filled = board.filled(
                         row,
-                        (size, index) -> size - index - 1 - temp - 1
+                        (size, index) -> temp - 1
                     );
                     if (filled.hasNext()) {
                         Field.swap(
