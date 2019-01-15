@@ -358,6 +358,49 @@ public final class FilledIteratorTest {
     }
 
     /**
+     * {@link FilledIterator#hasNext()} must return true even if the next filled
+     * field has some empty fields before it.
+     */
+    @Test
+    public void hasNextWithRange() {
+        final int num = 34;
+        final var fields = new Field[]{
+            new SimpleField(), new SimpleField(), new SimpleField(num),
+            new SimpleField(), new SimpleField(), new SimpleField(),
+            new SimpleField(), new SimpleField(), new SimpleField(),
+        };
+        MatcherAssert.assertThat(
+            new SimpleBoard(fields)
+                .filled(
+                    0, (size, index) -> index
+                ).hasNext(),
+            Matchers.is(true)
+        );
+    }
+
+    /**
+     * {@link FilledIterator#hasNext()} must return true even if it starts from
+     * the middle of the board by using
+     * {@link FilledIterator#FilledIterator(Board, int, BiFunction)}.
+     */
+    @Test
+    public void hasNextStartedInBetween() {
+        final int num = 132;
+        final var fields = new Field[]{
+            new SimpleField(), new SimpleField(), new SimpleField(num),
+            new SimpleField(), new SimpleField(), new SimpleField(),
+            new SimpleField(), new SimpleField(), new SimpleField(),
+        };
+        MatcherAssert.assertThat(
+            new SimpleBoard(fields)
+                .filled(
+                    0, (size, index) -> index + 1
+                ).hasNext(),
+            Matchers.is(true)
+        );
+    }
+
+    /**
      * With {@link FilledIterator#FilledIterator(Board, int, BiFunction)} one
      * can produce a vertical iteration.
      */

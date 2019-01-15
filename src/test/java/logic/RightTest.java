@@ -289,12 +289,93 @@ public final class RightTest {
     }
 
     /**
+     * {@link Right#push(Board)} on a board with one field that has a distance
+     * of multiple fields to the right side. This field must be pushed these
+     * multiple fields.
+     */
+    @Test
+    public void oneMultiCellPush() {
+        final int num = 4;
+        final Board board = new SimpleBoard(
+            new SimpleField(num), new SimpleField(), new SimpleField(),
+            new SimpleField(), new SimpleField(), new SimpleField(),
+            new SimpleField(), new SimpleField(), new SimpleField()
+        );
+        new Right().push(board);
+        MatcherAssert.assertThat(
+            board,
+            Matchers.equalTo(
+                new SimpleBoard(
+                    new SimpleField(), new SimpleField(), new SimpleField(num),
+                    new SimpleField(), new SimpleField(), new SimpleField(),
+                    new SimpleField(), new SimpleField(), new SimpleField()
+                )
+            )
+        );
+    }
+
+    /**
      * {@link Right#push(Board)} on a board with two filled fields next to each
      * other (without a gap) must push both of them to the right side.
      */
     @Test
     public void twoPushed() {
+        final int num = 4;
+        final int other = 23;
+        final Board board = new SimpleBoard(
+            new SimpleField(num), new SimpleField(other), new SimpleField(),
+            new SimpleField(), new SimpleField(), new SimpleField(),
+            new SimpleField(), new SimpleField(), new SimpleField()
+        );
+        new Right().push(board);
+        MatcherAssert.assertThat(
+            board,
+            Matchers.equalTo(
+                new SimpleBoard(
+                    new SimpleField(), new SimpleField(num),
+                    new SimpleField(other),
+                    new SimpleField(), new SimpleField(), new SimpleField(),
+                    new SimpleField(), new SimpleField(), new SimpleField()
+                )
+            )
+        );
+    }
 
+    /**
+     * {@link Right#push(Board)} on a board with two filled fields where one is
+     * already at the right side and one at the left side. The left one must be
+     * pushed.
+     */
+    @Test
+    public void oneToPushOneToStay() {
+        final int num = 534;
+        final int other = 41;
+        final Board board = new SimpleBoard(
+            new SimpleField(num), new SimpleField(), new SimpleField(),
+            new SimpleField(other),
+            new SimpleField(), new SimpleField(), new SimpleField(),
+            new SimpleField(),
+            new SimpleField(), new SimpleField(), new SimpleField(),
+            new SimpleField(),
+            new SimpleField(), new SimpleField(), new SimpleField(),
+            new SimpleField()
+        );
+        new Right().push(board);
+        MatcherAssert.assertThat(
+            board,
+            Matchers.equalTo(
+                new SimpleBoard(
+                    new SimpleField(), new SimpleField(), new SimpleField(num),
+                    new SimpleField(other),
+                    new SimpleField(), new SimpleField(), new SimpleField(),
+                    new SimpleField(),
+                    new SimpleField(), new SimpleField(), new SimpleField(),
+                    new SimpleField(),
+                    new SimpleField(), new SimpleField(), new SimpleField(),
+                    new SimpleField()
+                )
+            )
+        );
     }
 
     /**
@@ -303,7 +384,34 @@ public final class RightTest {
      */
     @Test
     public void twoWithGapPushed() {
-
+        final int num = 12;
+        final int other = 75;
+        final Board board = new SimpleBoard(
+            new SimpleField(num), new SimpleField(), new SimpleField(other),
+            new SimpleField(),
+            new SimpleField(), new SimpleField(), new SimpleField(),
+            new SimpleField(),
+            new SimpleField(), new SimpleField(), new SimpleField(),
+            new SimpleField(),
+            new SimpleField(), new SimpleField(), new SimpleField(),
+            new SimpleField()
+        );
+        new Right().push(board);
+        MatcherAssert.assertThat(
+            board,
+            Matchers.equalTo(
+                new SimpleBoard(
+                    new SimpleField(), new SimpleField(), new SimpleField(num),
+                    new SimpleField(other),
+                    new SimpleField(), new SimpleField(), new SimpleField(),
+                    new SimpleField(),
+                    new SimpleField(), new SimpleField(), new SimpleField(),
+                    new SimpleField(),
+                    new SimpleField(), new SimpleField(), new SimpleField(),
+                    new SimpleField()
+                )
+            )
+        );
     }
 
     /**
@@ -313,6 +421,34 @@ public final class RightTest {
      */
     @Test
     public void threeWithGapPushed() {
-
+        final int one = 12;
+        final int two = 75;
+        final int three = 75;
+        final Board board = new SimpleBoard(
+            new SimpleField(one), new SimpleField(two), new SimpleField(),
+            new SimpleField(three),
+            new SimpleField(), new SimpleField(), new SimpleField(),
+            new SimpleField(),
+            new SimpleField(), new SimpleField(), new SimpleField(),
+            new SimpleField(),
+            new SimpleField(), new SimpleField(), new SimpleField(),
+            new SimpleField()
+        );
+        new Right().push(board);
+        MatcherAssert.assertThat(
+            board,
+            Matchers.equalTo(
+                new SimpleBoard(
+                    new SimpleField(), new SimpleField(one),
+                    new SimpleField(two), new SimpleField(three),
+                    new SimpleField(), new SimpleField(), new SimpleField(),
+                    new SimpleField(),
+                    new SimpleField(), new SimpleField(), new SimpleField(),
+                    new SimpleField(),
+                    new SimpleField(), new SimpleField(), new SimpleField(),
+                    new SimpleField()
+                )
+            )
+        );
     }
 }

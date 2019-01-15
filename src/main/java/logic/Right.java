@@ -38,10 +38,10 @@ public class Right implements Move<Board> {
             ) {
                 final Field current = board.field(cell);
                 if (Field.isEmpty(current)) {
-                    final int temp = cell;
+                    final int iteration = board.rowSize() - 1 - cell;
                     final Iterator<Field> filled = board.filled(
                         row,
-                        (size, index) -> temp - 1
+                        (size, index) -> size - 1 - index - iteration - 1
                     );
                     if (filled.hasNext()) {
                         Field.swap(

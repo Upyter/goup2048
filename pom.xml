@@ -27,7 +27,7 @@
 
     <groupId>com.upyter.goup2048</groupId>
     <artifactId>goup2048</artifactId>
-    <version>0.19.2</version>
+    <version>0.19.3</version>
 
     <dependencies>
         <!-- utilities -->
