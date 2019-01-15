@@ -29,6 +29,7 @@ import org.junit.Test;
  * Tests for {@link Right}.
  * @since 0.14
  */
+@SuppressWarnings("PMD.TooManyMethods")
 public final class RightTest {
     /**
      * {@link Right#merge(Board)} with an empty board must be a no-op.
@@ -250,7 +251,7 @@ public final class RightTest {
     }
 
     /**
-     * {@link Right#push(Board) on an empty line must be a no-op.
+     * {@link Right#push(Board)} on an empty line must be a no-op.
      */
     @Test
     public void emptyLinePush() {
@@ -265,7 +266,7 @@ public final class RightTest {
     }
 
     /**
-     * {@link Right#push(Board) on a board with one filled field must push it
+     * {@link Right#push(Board)} on a board with one filled field must push it
      * correctly to the right side.
      */
     @Test
@@ -288,8 +289,8 @@ public final class RightTest {
     }
 
     /**
-     * {@link Right#push(Board) on a board with two filled fields next to each other
-     * (without a gap) must push both of them to the right side.
+     * {@link Right#push(Board)} on a board with two filled fields next to each
+     * other (without a gap) must push both of them to the right side.
      */
     @Test
     public void twoPushed() {
@@ -297,7 +298,7 @@ public final class RightTest {
     }
 
     /**
-     * {@link Right#push(Board) on a board with two filled fields with a gap in
+     * {@link Right#push(Board)} on a board with two filled fields with a gap in
      * between must push them to the right side. The gap must disappear.
      */
     @Test
@@ -306,7 +307,7 @@ public final class RightTest {
     }
 
     /**
-     * {@link Right#push(Board) on a board wtih three filled fields, where two
+     * {@link Right#push(Board)} on a board wtih three filled fields, where two
      * of them have a gap in between, must push the to the right side, removing
      * the gap.
      */

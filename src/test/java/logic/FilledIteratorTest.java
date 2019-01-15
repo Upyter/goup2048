@@ -344,13 +344,15 @@ public final class FilledIteratorTest {
      */
     @Test
     public void hasNextInvalidIndex() {
+        final var fields = new Field[]{
+            new SimpleField(), new SimpleField(),
+            new SimpleField(), new SimpleField(),
+        };
         MatcherAssert.assertThat(
-            new SimpleBoard(
-                new SimpleField(), new SimpleField(),
-                new SimpleField(), new SimpleField()
-            ).filled(
-                0, (index, size) -> 5
-            ).hasNext(),
+            new SimpleBoard(fields)
+                .filled(
+                    0, (index, size) -> fields.length + 1
+                ).hasNext(),
             Matchers.is(false)
         );
     }
