@@ -320,6 +320,24 @@ public final class FilledIteratorTest {
     }
 
     /**
+     * {@link FilledIterator#hasNext()} mustn't throw exceptions, even if
+     * {@link FilledIterator#FilledIterator(Board, int, BiFunction)} is used
+     * to create an iteration through unavailable indices.
+     */
+    @Test
+    public void hasNextInvalidIndex() {
+        MatcherAssert.assertThat(
+            new SimpleBoard(
+                new SimpleField(), new SimpleField(),
+                new SimpleField(), new SimpleField()
+            ).filled(
+                2, (index, size) -> size
+            ).hasNext(),
+            Matchers.is(false)
+        );
+    }
+
+    /**
      * With {@link FilledIterator#FilledIterator(Board, int, BiFunction)} one
      * can produce a vertical iteration.
      */

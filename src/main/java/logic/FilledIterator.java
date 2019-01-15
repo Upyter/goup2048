@@ -82,20 +82,22 @@ public class FilledIterator implements Iterator<Field> {
     public final boolean hasNext() {
         // @checkstyle LocalVariableName (1 line)
         int nextCursor = this.cursor + 1;
-        while (nextCursor < this.board.rowSize()) {
-            if (
-                Field.isFilled(
-                    this.board.get(
-                        this.cellFunction.apply(
-                            this.board.rowSize(),
-                            nextCursor
-                        ) + this.row * this.board.rowSize()
+        if (0 <= this.row && this.row < this.board.rowSize()) {
+            while (nextCursor < this.board.rowSize()) {
+                if (
+                    Field.isFilled(
+                        this.board.get(
+                            this.cellFunction.apply(
+                                this.board.rowSize(),
+                                nextCursor
+                            ) + this.row * this.board.rowSize()
+                        )
                     )
-                )
-            ) {
-                return true;
-            } else {
-                ++nextCursor;
+                ) {
+                    return true;
+                } else {
+                    ++nextCursor;
+                }
             }
         }
         return false;
