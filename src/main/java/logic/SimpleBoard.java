@@ -24,6 +24,7 @@ package logic;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.stream.Collectors;
 import lombok.EqualsAndHashCode;
 
 /**
@@ -50,6 +51,19 @@ public class SimpleBoard implements Board {
             new SimpleField(0), new SimpleField(0), new SimpleField(0),
             new SimpleField(0), new SimpleField(0), new SimpleField(0),
             new SimpleField(0)
+        );
+    }
+
+    /**
+     * Ctor. Creates instances of {@link SimpleField} with the given nums.
+     * @param nums The nums of the fields to be created for this board.
+     */
+    public SimpleBoard(final int[] nums) {
+        this(
+            Arrays.stream(nums)
+                .mapToObj(SimpleField::new)
+                .collect(Collectors.toList())
+                .toArray(new Field[nums.length])
         );
     }
 
