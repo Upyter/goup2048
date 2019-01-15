@@ -26,18 +26,18 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 
 /**
- * Tests for {@link Right}.
- * @since 0.14
+ * Tests for {@link Left}.
+ * @since 0.21
  */
 @SuppressWarnings("PMD.TooManyMethods")
-public final class RightTest {
+public final class LeftTest {
     /**
-     * {@link Right#merge(Board)} with an empty board must be a no-op.
+     * {@link Left#merge(Board)} with an empty board must be a no-op.
      */
     @Test
     public void emptyLineMerge() {
         final Board board = new SimpleBoard();
-        new Right().merge(board);
+        new Left().merge(board);
         MatcherAssert.assertThat(
             board,
             Matchers.equalTo(
@@ -47,7 +47,7 @@ public final class RightTest {
     }
 
     /**
-     * {@link Right#merge(Board)} with one filled field must be a no-op.
+     * {@link Left#merge(Board)} with one filled field must be a no-op.
      */
     @Test
     public void oneFilledMerge() {
@@ -56,7 +56,7 @@ public final class RightTest {
             new SimpleField(num), new SimpleField(),
             new SimpleField(), new SimpleField()
         );
-        new Right().merge(board);
+        new Left().merge(board);
         MatcherAssert.assertThat(
             board,
             Matchers.equalTo(
@@ -69,7 +69,7 @@ public final class RightTest {
     }
 
     /**
-     * {@link Right#merge(Board)} with multiple filled but non mergeable fields
+     * {@link Left#merge(Board)} with multiple filled but non mergeable fields
      * must be a no-op.
      */
     @Test
@@ -80,7 +80,7 @@ public final class RightTest {
             new SimpleField(num), new SimpleField(other),
             new SimpleField(), new SimpleField()
         );
-        new Right().merge(board);
+        new Left().merge(board);
         MatcherAssert.assertThat(
             board,
             Matchers.equalTo(
@@ -93,7 +93,7 @@ public final class RightTest {
     }
 
     /**
-     * {@link Right#merge(Board)} with two mergeable fields next to each other
+     * {@link Left#merge(Board)} with two mergeable fields next to each other
      * must result in a correct merge.
      */
     @Test
@@ -103,12 +103,12 @@ public final class RightTest {
             new SimpleField(num), new SimpleField(num),
             new SimpleField(), new SimpleField()
         );
-        new Right().merge(board);
+        new Left().merge(board);
         MatcherAssert.assertThat(
             board,
             Matchers.equalTo(
                 new SimpleBoard(
-                    new SimpleField(), new SimpleField(num * 2),
+                    new SimpleField(num * 2), new SimpleField(),
                     new SimpleField(), new SimpleField()
                 )
             )
@@ -116,7 +116,7 @@ public final class RightTest {
     }
 
     /**
-     * {@link Right#merge(Board)} with two mergeable fields with an empty field
+     * {@link Left#merge(Board)} with two mergeable fields with an empty field
      * in between must result in a correct merge.
      */
     @Test
@@ -127,13 +127,13 @@ public final class RightTest {
             new SimpleField(), new SimpleField(), new SimpleField(),
             new SimpleField(), new SimpleField(), new SimpleField()
         );
-        new Right().merge(board);
+        new Left().merge(board);
         MatcherAssert.assertThat(
             board,
             Matchers.equalTo(
                 new SimpleBoard(
-                    new SimpleField(), new SimpleField(),
-                    new SimpleField(num * 2),
+                    new SimpleField(num * 2), new SimpleField(),
+                    new SimpleField(),
                     new SimpleField(), new SimpleField(), new SimpleField(),
                     new SimpleField(), new SimpleField(), new SimpleField()
                 )
@@ -142,7 +142,7 @@ public final class RightTest {
     }
 
     /**
-     * {@link Right#merge(Board)} with two mergeable fields that have a non
+     * {@link Left#merge(Board)} with two mergeable fields that have a non
      * empty field in between must be a no-op.
      */
     @Test
@@ -154,7 +154,7 @@ public final class RightTest {
             new SimpleField(), new SimpleField(), new SimpleField(),
             new SimpleField(), new SimpleField(), new SimpleField()
         );
-        new Right().merge(board);
+        new Left().merge(board);
         MatcherAssert.assertThat(
             board,
             Matchers.equalTo(
@@ -169,7 +169,7 @@ public final class RightTest {
     }
 
     /**
-     * {@link Right#merge(Board)} with two mergeable fields that are next to
+     * {@link Left#merge(Board)} with two mergeable fields that are next to
      * each other but on different lines must be a no-op.
      */
     @Test
@@ -180,7 +180,7 @@ public final class RightTest {
             new SimpleField(num), new SimpleField(), new SimpleField(),
             new SimpleField(), new SimpleField(), new SimpleField()
         );
-        new Right().merge(board);
+        new Left().merge(board);
         MatcherAssert.assertThat(
             board,
             Matchers.equalTo(
@@ -194,9 +194,9 @@ public final class RightTest {
     }
 
     /**
-     * {@link Right#merge(Board)} with three mergeable fields next to each other
-     * must result in two fields merged (the fields on the right side) and
-     * leaving the left like it is.
+     * {@link Left#merge(Board)} with three mergeable fields next to each other
+     * must result in two fields merged (the fields on the left side) and
+     * leaving the right like it is.
      */
     @Test
     public void threeFieldsMerge() {
@@ -206,13 +206,13 @@ public final class RightTest {
             new SimpleField(), new SimpleField(), new SimpleField(),
             new SimpleField(), new SimpleField(), new SimpleField()
         );
-        new Right().merge(board);
+        new Left().merge(board);
         MatcherAssert.assertThat(
             board,
             Matchers.equalTo(
                 new SimpleBoard(
-                    new SimpleField(num), new SimpleField(),
-                    new SimpleField(num * 2),
+                    new SimpleField(num * 2), new SimpleField(),
+                    new SimpleField(num),
                     new SimpleField(), new SimpleField(),
                     new SimpleField(),
                     new SimpleField(), new SimpleField(),
@@ -223,7 +223,7 @@ public final class RightTest {
     }
 
     /**
-     * {@link Right#merge(Board)} with multiple mergeable lines must be merged
+     * {@link Left#merge(Board)} with multiple mergeable lines must be merged
      * correctly.
      */
     @Test
@@ -234,24 +234,24 @@ public final class RightTest {
             new SimpleField(), new SimpleField(num), new SimpleField(num),
             new SimpleField(num), new SimpleField(num), new SimpleField(num)
         );
-        new Right().merge(board);
+        new Left().merge(board);
         MatcherAssert.assertThat(
             board,
             Matchers.equalTo(
                 new SimpleBoard(
+                    new SimpleField(num * 2), new SimpleField(),
+                    new SimpleField(),
                     new SimpleField(), new SimpleField(num * 2),
                     new SimpleField(),
-                    new SimpleField(), new SimpleField(),
-                    new SimpleField(num * 2),
-                    new SimpleField(num), new SimpleField(),
-                    new SimpleField(num * 2)
+                    new SimpleField(num * 2), new SimpleField(),
+                    new SimpleField(num)
                 )
             )
         );
     }
 
     /**
-     * {@link Right#merge(Board)} with four fields that are mergeable must
+     * {@link Left#merge(Board)} with four fields that are mergeable must
      * merge them into two fields.
      */
     @Test
@@ -267,13 +267,13 @@ public final class RightTest {
             new SimpleField(), new SimpleField(), new SimpleField(),
             new SimpleField()
         );
-        new Right().merge(board);
+        new Left().merge(board);
         MatcherAssert.assertThat(
             board,
             Matchers.equalTo(
                 new SimpleBoard(
-                    new SimpleField(), new SimpleField(num * 2),
-                    new SimpleField(), new SimpleField(num * 2),
+                    new SimpleField(num * 2), new SimpleField(),
+                    new SimpleField(num * 2), new SimpleField(),
                     new SimpleField(), new SimpleField(),
                     new SimpleField(), new SimpleField(),
                     new SimpleField(), new SimpleField(),
@@ -286,12 +286,12 @@ public final class RightTest {
     }
 
     /**
-     * {@link Right#push(Board)} on an empty line must be a no-op.
+     * {@link Left#push(Board)} on an empty line must be a no-op.
      */
     @Test
     public void emptyLinePush() {
         final Board board = new SimpleBoard();
-        new Right().push(board);
+        new Left().push(board);
         MatcherAssert.assertThat(
             board,
             Matchers.equalTo(
@@ -301,22 +301,22 @@ public final class RightTest {
     }
 
     /**
-     * {@link Right#push(Board)} on a board with one filled field must push it
-     * correctly to the right side.
+     * {@link Left#push(Board)} on a board with one filled field must push it
+     * correctly.
      */
     @Test
     public void oneFilledPush() {
         final int num = 4;
         final Board board = new SimpleBoard(
-            new SimpleField(num), new SimpleField(),
+            new SimpleField(), new SimpleField(num),
             new SimpleField(), new SimpleField()
         );
-        new Right().push(board);
+        new Left().push(board);
         MatcherAssert.assertThat(
             board,
             Matchers.equalTo(
                 new SimpleBoard(
-                    new SimpleField(), new SimpleField(num),
+                    new SimpleField(num), new SimpleField(),
                     new SimpleField(), new SimpleField()
                 )
             )
@@ -324,24 +324,24 @@ public final class RightTest {
     }
 
     /**
-     * {@link Right#push(Board)} on a board with one field that has a distance
-     * of multiple fields to the right side. This field must be pushed these
+     * {@link Left#push(Board)} on a board with one field that has a distance
+     * of multiple fields to the left side. This field must be pushed these
      * multiple fields.
      */
     @Test
     public void oneMultiCellPush() {
         final int num = 4;
         final Board board = new SimpleBoard(
-            new SimpleField(num), new SimpleField(), new SimpleField(),
+            new SimpleField(), new SimpleField(), new SimpleField(num),
             new SimpleField(), new SimpleField(), new SimpleField(),
             new SimpleField(), new SimpleField(), new SimpleField()
         );
-        new Right().push(board);
+        new Left().push(board);
         MatcherAssert.assertThat(
             board,
             Matchers.equalTo(
                 new SimpleBoard(
-                    new SimpleField(), new SimpleField(), new SimpleField(num),
+                    new SimpleField(num), new SimpleField(), new SimpleField(),
                     new SimpleField(), new SimpleField(), new SimpleField(),
                     new SimpleField(), new SimpleField(), new SimpleField()
                 )
@@ -350,25 +350,25 @@ public final class RightTest {
     }
 
     /**
-     * {@link Right#push(Board)} on a board with two filled fields next to each
-     * other (without a gap) must push both of them to the right side.
+     * {@link Left#push(Board)} on a board with two filled fields next to each
+     * other (without a gap) must push both of them to the left side.
      */
     @Test
     public void twoPushed() {
         final int num = 4;
         final int other = 23;
         final Board board = new SimpleBoard(
-            new SimpleField(num), new SimpleField(other), new SimpleField(),
+            new SimpleField(), new SimpleField(other), new SimpleField(num),
             new SimpleField(), new SimpleField(), new SimpleField(),
             new SimpleField(), new SimpleField(), new SimpleField()
         );
-        new Right().push(board);
+        new Left().push(board);
         MatcherAssert.assertThat(
             board,
             Matchers.equalTo(
                 new SimpleBoard(
-                    new SimpleField(), new SimpleField(num),
-                    new SimpleField(other),
+                    new SimpleField(other), new SimpleField(num),
+                    new SimpleField(),
                     new SimpleField(), new SimpleField(), new SimpleField(),
                     new SimpleField(), new SimpleField(), new SimpleField()
                 )
@@ -377,8 +377,8 @@ public final class RightTest {
     }
 
     /**
-     * {@link Right#push(Board)} on a board with two filled fields where one is
-     * already at the right side and one at the left side. The left one must be
+     * {@link Left#push(Board)} on a board with two filled fields where one is
+     * already at the left side and one at the right side. The right one must be
      * pushed.
      */
     @Test
@@ -395,13 +395,13 @@ public final class RightTest {
             new SimpleField(), new SimpleField(), new SimpleField(),
             new SimpleField()
         );
-        new Right().push(board);
+        new Left().push(board);
         MatcherAssert.assertThat(
             board,
             Matchers.equalTo(
                 new SimpleBoard(
-                    new SimpleField(), new SimpleField(), new SimpleField(num),
-                    new SimpleField(other),
+                    new SimpleField(num), new SimpleField(other),
+                    new SimpleField(), new SimpleField(),
                     new SimpleField(), new SimpleField(), new SimpleField(),
                     new SimpleField(),
                     new SimpleField(), new SimpleField(), new SimpleField(),
@@ -414,8 +414,8 @@ public final class RightTest {
     }
 
     /**
-     * {@link Right#push(Board)} on a board with two filled fields with a gap in
-     * between must push them to the right side. The gap must disappear.
+     * {@link Left#push(Board)} on a board with two filled fields with a gap in
+     * between must push them to the left side. The gap must disappear.
      */
     @Test
     public void twoWithGapPushed() {
@@ -431,13 +431,13 @@ public final class RightTest {
             new SimpleField(), new SimpleField(), new SimpleField(),
             new SimpleField()
         );
-        new Right().push(board);
+        new Left().push(board);
         MatcherAssert.assertThat(
             board,
             Matchers.equalTo(
                 new SimpleBoard(
-                    new SimpleField(), new SimpleField(), new SimpleField(num),
-                    new SimpleField(other),
+                    new SimpleField(num), new SimpleField(other),
+                    new SimpleField(), new SimpleField(),
                     new SimpleField(), new SimpleField(), new SimpleField(),
                     new SimpleField(),
                     new SimpleField(), new SimpleField(), new SimpleField(),
@@ -450,8 +450,8 @@ public final class RightTest {
     }
 
     /**
-     * {@link Right#push(Board)} on a board with three filled fields, where two
-     * of them have a gap in between, must push the to the right side, removing
+     * {@link Left#push(Board)} on a board with three filled fields, where two
+     * of them have a gap in between, must push the to the left side, removing
      * the gap.
      */
     @Test
@@ -460,7 +460,7 @@ public final class RightTest {
         final int two = 75;
         final int three = 75;
         final Board board = new SimpleBoard(
-            new SimpleField(one), new SimpleField(two), new SimpleField(),
+            new SimpleField(one), new SimpleField(), new SimpleField(two),
             new SimpleField(three),
             new SimpleField(), new SimpleField(), new SimpleField(),
             new SimpleField(),
@@ -469,13 +469,13 @@ public final class RightTest {
             new SimpleField(), new SimpleField(), new SimpleField(),
             new SimpleField()
         );
-        new Right().push(board);
+        new Left().push(board);
         MatcherAssert.assertThat(
             board,
             Matchers.equalTo(
                 new SimpleBoard(
-                    new SimpleField(), new SimpleField(one),
-                    new SimpleField(two), new SimpleField(three),
+                    new SimpleField(one), new SimpleField(two),
+                    new SimpleField(three), new SimpleField(),
                     new SimpleField(), new SimpleField(), new SimpleField(),
                     new SimpleField(),
                     new SimpleField(), new SimpleField(), new SimpleField(),
