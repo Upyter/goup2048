@@ -22,8 +22,6 @@
 package logic;
 
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.function.BiFunction;
 
 /**
  * The board of the 2048 game. The size of it depends on the concrete
@@ -55,17 +53,4 @@ public interface Board {
      * @return The size of a row.
      */
     int rowSize();
-
-    /**
-     * Returns an iterator for filled fields.
-     * @param row The row to iterate through.
-     * @param cellFunction The function to transform the index into the concrete
-     *  cell.
-     * @return An iterator for filled fields.
-     * @checkstyle ParameterNameCheck (4 lines)
-     */
-    Iterator<Field> filled(
-        int row,
-        BiFunction<Integer, Integer, Integer> cellFunction
-    );
 }

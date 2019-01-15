@@ -31,7 +31,7 @@ import java.util.function.BiFunction;
  * @see Board
  * @since 0.14
  */
-public class FilledIterator implements Iterator<Field> {
+public class Filled implements Iterator<Field> {
     /**
      * The board to iterate through.
      */
@@ -54,6 +54,26 @@ public class FilledIterator implements Iterator<Field> {
     private int cursor;
 
     /**
+     * Ctor. Uses the first row for iteration.
+     * @param board The board to iterate through.
+     * @param cellFunction The function to transform an index to the concrete
+     *  cell. It gets the current index and the size of a row to return the
+     *  cell. Example:
+     *  <pre>{@code (index, rowSize) -> index; // normal order}</pre>
+     *  <pre>{@code (index, rowSize) -> size - 1 - index; // reversed order}
+     *  </pre>
+     *  Choosing a cellFunction that returns unavailable indices results in an
+     *  empty iteration.
+     * @checkstyle ParameterNameCheck (4 lines)
+     */
+    public Filled(
+        final Board board,
+        final BiFunction<Integer, Integer, Integer> cellFunction
+    ) {
+        this(board, 0, cellFunction);
+    }
+
+    /**
      * Ctor.
      * @param board The board to iterate through.
      * @param row The row to iterate through. Choosing an unavailable row
@@ -68,7 +88,7 @@ public class FilledIterator implements Iterator<Field> {
      *  empty iteration.
      * @checkstyle ParameterNameCheck (5 lines)
      */
-    public FilledIterator(
+    public Filled(
         final Board board,
         final int row,
         final BiFunction<Integer, Integer, Integer> cellFunction

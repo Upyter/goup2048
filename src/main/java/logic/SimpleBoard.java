@@ -24,8 +24,6 @@ package logic;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.Iterator;
-import java.util.function.BiFunction;
 import lombok.EqualsAndHashCode;
 
 /**
@@ -96,15 +94,6 @@ public class SimpleBoard implements Board {
     @Override
     public final int rowSize() {
         return SquareRoot.root(this.fields.length);
-    }
-
-    // @checkstyle ParameterNameCheck (4 lines)
-    @Override
-    public final Iterator<Field> filled(
-        final int row,
-        final BiFunction<Integer, Integer, Integer> cellFunction
-    ) {
-        return new FilledIterator(this, row, cellFunction);
     }
 
     @Override

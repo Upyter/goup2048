@@ -29,43 +29,43 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 
 /**
- * A test for {@link FilledIterator}.
+ * A test for {@link Filled}.
  * @since 0.16
  */
 @SuppressWarnings("PMD.TooManyMethods")
-public final class FilledIteratorTest {
+public final class FilledTest {
     /**
-     * {@link FilledIterator#hasNext()} must return false for a board with no
+     * {@link Filled#hasNext()} must return false for a board with no
      * fields.
      */
     @Test
     public void noFields() {
         MatcherAssert.assertThat(
-            new SimpleBoard(
-                new Field[]{}
-            ).filled(
-                0, (size, index) -> index
+            new Filled(
+                new SimpleBoard(new Field[]{}),
+                (size, index) -> index
             ).hasNext(),
             Matchers.is(false)
         );
     }
 
     /**
-     * {@link FilledIterator#hasNext()} must return false for a board that
+     * {@link Filled#hasNext()} must return false for a board that
      * consists of empty fields.
      */
     @Test
     public void emptyBoard() {
         MatcherAssert.assertThat(
-            new SimpleBoard().filled(
-                0, (size, index) -> index
+            new Filled(
+                new SimpleBoard(),
+                (size, index) -> index
             ).hasNext(),
             Matchers.is(false)
         );
     }
 
     /**
-     * {@link FilledIterator#next()} must return all values of the board (in
+     * {@link Filled#next()} must return all values of the board (in
      * the chosen row) if there are only filled lines.
      */
     @Test
@@ -74,16 +74,19 @@ public final class FilledIteratorTest {
         final var second = 2;
         final var third = 6;
         final var fourth = 64;
-        final Iterator<Field> iter = new SimpleBoard(
-            new SimpleField(first), new SimpleField(second),
-            new SimpleField(third), new SimpleField(fourth),
-            new SimpleField(), new SimpleField(),
-            new SimpleField(), new SimpleField(),
-            new SimpleField(), new SimpleField(),
-            new SimpleField(), new SimpleField(),
-            new SimpleField(), new SimpleField(),
-            new SimpleField(), new SimpleField()
-        ).filled(0, (size, index) -> index);
+        final Iterator<Field> iter = new Filled(
+            new SimpleBoard(
+                new SimpleField(first), new SimpleField(second),
+                new SimpleField(third), new SimpleField(fourth),
+                new SimpleField(), new SimpleField(),
+                new SimpleField(), new SimpleField(),
+                new SimpleField(), new SimpleField(),
+                new SimpleField(), new SimpleField(),
+                new SimpleField(), new SimpleField(),
+                new SimpleField(), new SimpleField()
+            ),
+            (size, index) -> index
+        );
         MatcherAssert.assertThat(iter.next().number(), Matchers.equalTo(first));
         MatcherAssert.assertThat(
             iter.next().number(), Matchers.equalTo(second)
@@ -96,16 +99,19 @@ public final class FilledIteratorTest {
 
     /**
      * Two filled fields next to each other must be returned in this order
-     * by {@link FilledIterator#next()}.
+     * by {@link Filled#next()}.
      */
     @Test
     public void filledNextToEachOther() {
         final var first = 5;
         final var second = 12;
-        final Iterator<Field> iter = new SimpleBoard(
-            new SimpleField(first), new SimpleField(second),
-            new SimpleField(), new SimpleField()
-        ).filled(0, (size, index) -> index);
+        final Iterator<Field> iter = new Filled(
+            new SimpleBoard(
+                new SimpleField(first), new SimpleField(second),
+                new SimpleField(), new SimpleField()
+            ),
+            (size, index) -> index
+        );
         MatcherAssert.assertThat(iter.next().number(), Matchers.equalTo(first));
         MatcherAssert.assertThat(
             iter.next().number(),
@@ -115,17 +121,21 @@ public final class FilledIteratorTest {
 
     /**
      * Two filled fields with an empty field in between must be returned without
-     * the empty field by {@link FilledIterator#next()}.
+     * the empty field by {@link Filled#next()}.
      */
     @Test
     public void filledWithOneGapBetween() {
         final var first = 55;
         final var second = 324;
-        final Iterator<Field> iter = new SimpleBoard(
-            new SimpleField(first), new SimpleField(), new SimpleField(second),
-            new SimpleField(), new SimpleField(), new SimpleField(),
-            new SimpleField(), new SimpleField(), new SimpleField()
-        ).filled(0, (size, index) -> index);
+        final Iterator<Field> iter = new Filled(
+            new SimpleBoard(
+                new SimpleField(first), new SimpleField(),
+                new SimpleField(second),
+                new SimpleField(), new SimpleField(), new SimpleField(),
+                new SimpleField(), new SimpleField(), new SimpleField()
+            ),
+            (size, index) -> index
+        );
         MatcherAssert.assertThat(iter.next().number(), Matchers.equalTo(first));
         MatcherAssert.assertThat(
             iter.next().number(), Matchers.equalTo(second)
@@ -134,20 +144,23 @@ public final class FilledIteratorTest {
 
     /**
      * Two filled fields with multiple empty fields in between must be returned
-     * without the empty fields by {@link FilledIterator#next()}.
+     * without the empty fields by {@link Filled#next()}.
      */
     @Test
     public void filledWithTwoGapBetween() {
         final var first = 543;
         final var second = 56;
-        final Iterator<Field> iter = new SimpleBoard(
-            new SimpleField(first), new SimpleField(), new SimpleField(),
-            new SimpleField(second), new SimpleField(), new SimpleField(),
-            new SimpleField(), new SimpleField(), new SimpleField(),
-            new SimpleField(), new SimpleField(), new SimpleField(),
-            new SimpleField(), new SimpleField(), new SimpleField(),
-            new SimpleField()
-        ).filled(0, (size, index) -> index);
+        final Iterator<Field> iter = new Filled(
+            new SimpleBoard(
+                new SimpleField(first), new SimpleField(), new SimpleField(),
+                new SimpleField(second), new SimpleField(), new SimpleField(),
+                new SimpleField(), new SimpleField(), new SimpleField(),
+                new SimpleField(), new SimpleField(), new SimpleField(),
+                new SimpleField(), new SimpleField(), new SimpleField(),
+                new SimpleField()
+            ),
+            (size, index) -> index
+        );
         MatcherAssert.assertThat(iter.next().number(), Matchers.equalTo(first));
         MatcherAssert.assertThat(
             iter.next().number(), Matchers.equalTo(second)
@@ -155,17 +168,20 @@ public final class FilledIteratorTest {
     }
 
     /**
-     * Multiple calls to {@link FilledIterator#hasNext()} mustn't change the
+     * Multiple calls to {@link Filled#hasNext()} mustn't change the
      * behaviour of the iterator.
      */
     @Test
     public void hasNextDoesntMutate() {
         final var first = 6;
         final var second = 8;
-        final Iterator<Field> iter = new SimpleBoard(
-            new SimpleField(first), new SimpleField(second),
-            new SimpleField(), new SimpleField()
-        ).filled(0, (size, index) -> index);
+        final Iterator<Field> iter = new Filled(
+            new SimpleBoard(
+                new SimpleField(first), new SimpleField(second),
+                new SimpleField(), new SimpleField()
+            ),
+            (size, index) -> index
+        );
         MatcherAssert.assertThat(iter.hasNext(), Matchers.is(true));
         MatcherAssert.assertThat(iter.next().number(), Matchers.equalTo(first));
         MatcherAssert.assertThat(iter.hasNext(), Matchers.is(true));
@@ -176,18 +192,18 @@ public final class FilledIteratorTest {
     }
 
     /**
-     * {@link FilledIterator#next()} must through an
+     * {@link Filled#next()} must through an
      * {@link IllegalStateException} if there aren't any filled fields left.
      */
     @Test(expected = NoSuchElementException.class)
     public void nextThrows() {
-        new SimpleBoard().filled(
-            0, (size, index) -> index
+        new Filled(
+            new SimpleBoard(), (size, index) -> index
         ).next();
     }
 
     /**
-     * With {@link FilledIterator#FilledIterator(Board, int, BiFunction)} one
+     * With {@link Filled#Filled(Board, int, BiFunction)} one
      * can produce a reversed iteration.
      */
     @Test
@@ -198,7 +214,7 @@ public final class FilledIteratorTest {
             new SimpleField(), new SimpleField(), new SimpleField(),
         };
         final var board = new SimpleBoard(fields);
-        final var filled = new FilledIterator(
+        final var filled = new Filled(
             board,
             0,
             (size, index) -> size - index - 1
@@ -212,7 +228,7 @@ public final class FilledIteratorTest {
     }
 
     /**
-     * With {@link FilledIterator#FilledIterator(Board, int, BiFunction)} one
+     * With {@link Filled#Filled(Board, int, BiFunction)} one
      * can produce an iteration that starts from a row that is not the first.
      */
     @Test
@@ -223,7 +239,7 @@ public final class FilledIteratorTest {
             new SimpleField(), new SimpleField(), new SimpleField(),
         };
         final var board = new SimpleBoard(fields);
-        final var filled = new FilledIterator(
+        final var filled = new Filled(
             board,
             1,
             (size, index) -> index
@@ -237,9 +253,9 @@ public final class FilledIteratorTest {
     }
 
     /**
-     * {@link FilledIterator#hasNext()} must return true for a board with
+     * {@link Filled#hasNext()} must return true for a board with
      * multiple fields when
-     * {@link FilledIterator#FilledIterator(Board, int, BiFunction)} is used
+     * {@link Filled#Filled(Board, int, BiFunction)} is used
      * to create an iteration that starts from a row that is not the first.
      */
     @Test
@@ -250,7 +266,7 @@ public final class FilledIteratorTest {
             new SimpleField(), new SimpleField(), new SimpleField(),
         };
         final var board = new SimpleBoard(fields);
-        final var filled = new FilledIterator(
+        final var filled = new Filled(
             board,
             1,
             (size, index) -> index
@@ -262,46 +278,44 @@ public final class FilledIteratorTest {
     }
 
     /**
-     * {@link FilledIterator#hasNext()} must return true for a board with only
+     * {@link Filled#hasNext()} must return true for a board with only
      * one field when
-     * {@link FilledIterator#FilledIterator(Board, int, BiFunction)} is used
+     * {@link Filled#Filled(Board, int, BiFunction)} is used
      * to create a reversed iteration.
      */
     @Test
     public void hasNextReversedSingleField() {
         final var num = 4;
         MatcherAssert.assertThat(
-            new SimpleBoard(
-                new SimpleField(num)
-            ).filled(
-                0, (size, index) -> size - index - 1
+            new Filled(
+                new SimpleBoard(new SimpleField(num)),
+                (size, index) -> size - index - 1
             ).hasNext(),
             Matchers.is(true)
         );
     }
 
     /**
-     * {@link FilledIterator#hasNext()} must return false for a board with only
+     * {@link Filled#hasNext()} must return false for a board with only
      * one empty field when
-     * {@link FilledIterator#FilledIterator(Board, int, BiFunction)} is used
+     * {@link Filled#Filled(Board, int, BiFunction)} is used
      * to create a reversed iteration.
      */
     @Test
     public void notHasNextReversedSingleField() {
         MatcherAssert.assertThat(
-            new SimpleBoard(
-                new SimpleField()
-            ).filled(
-                0, (size, index) -> size - index - 1
+            new Filled(
+                new SimpleBoard(new SimpleField()),
+                (size, index) -> size - index - 1
             ).hasNext(),
             Matchers.is(false)
         );
     }
 
     /**
-     * {@link FilledIterator#hasNext()} must return true for a board with
+     * {@link Filled#hasNext()} must return true for a board with
      * multiple fields when
-     * {@link FilledIterator#FilledIterator(Board, int, BiFunction)} is used
+     * {@link Filled#Filled(Board, int, BiFunction)} is used
      * to create a reversed iteration.
      */
     @Test
@@ -309,37 +323,40 @@ public final class FilledIteratorTest {
         final var first = 4;
         final var second = 52;
         MatcherAssert.assertThat(
-            new SimpleBoard(
-                new SimpleField(first), new SimpleField(second),
-                new SimpleField(), new SimpleField()
-            ).filled(
-                0, (size, index) -> size - index - 1
+            new Filled(
+                new SimpleBoard(
+                    new SimpleField(first), new SimpleField(second),
+                    new SimpleField(), new SimpleField()
+                ),
+                (size, index) -> size - index - 1
             ).hasNext(),
             Matchers.is(true)
         );
     }
 
     /**
-     * {@link FilledIterator#hasNext()} mustn't throw exceptions, even if
-     * {@link FilledIterator#FilledIterator(Board, int, BiFunction)} is used
+     * {@link Filled#hasNext()} mustn't throw exceptions, even if
+     * {@link Filled#Filled(Board, int, BiFunction)} is used
      * to create an iteration through an unavailable row.
      */
     @Test
     public void hasNextInvalidRow() {
         MatcherAssert.assertThat(
-            new SimpleBoard(
-                new SimpleField(), new SimpleField(),
-                new SimpleField(), new SimpleField()
-            ).filled(
-                2, (index, size) -> size
+            new Filled(
+                new SimpleBoard(
+                    new SimpleField(), new SimpleField(),
+                    new SimpleField(), new SimpleField()
+                ),
+                2,
+                (index, size) -> size
             ).hasNext(),
             Matchers.is(false)
         );
     }
 
     /**
-     * {@link FilledIterator#hasNext()} mustn't throw exceptions, even if
-     * {@link FilledIterator#FilledIterator(Board, int, BiFunction)} is used
+     * {@link Filled#hasNext()} mustn't throw exceptions, even if
+     * {@link Filled#Filled(Board, int, BiFunction)} is used
      * to create an iteration through unavailable indices.
      */
     @Test
@@ -349,16 +366,16 @@ public final class FilledIteratorTest {
             new SimpleField(), new SimpleField(),
         };
         MatcherAssert.assertThat(
-            new SimpleBoard(fields)
-                .filled(
-                    0, (index, size) -> fields.length + 1
-                ).hasNext(),
+            new Filled(
+                new SimpleBoard(fields),
+                (index, size) -> fields.length + 1
+            ).hasNext(),
             Matchers.is(false)
         );
     }
 
     /**
-     * {@link FilledIterator#hasNext()} must return true even if the next filled
+     * {@link Filled#hasNext()} must return true even if the next filled
      * field has some empty fields before it.
      */
     @Test
@@ -370,18 +387,18 @@ public final class FilledIteratorTest {
             new SimpleField(), new SimpleField(), new SimpleField(),
         };
         MatcherAssert.assertThat(
-            new SimpleBoard(fields)
-                .filled(
-                    0, (size, index) -> index
-                ).hasNext(),
+            new Filled(
+                new SimpleBoard(fields),
+                (size, index) -> index
+            ).hasNext(),
             Matchers.is(true)
         );
     }
 
     /**
-     * {@link FilledIterator#hasNext()} must return true even if it starts from
+     * {@link Filled#hasNext()} must return true even if it starts from
      * the middle of the board by using
-     * {@link FilledIterator#FilledIterator(Board, int, BiFunction)}.
+     * {@link Filled#Filled(Board, int, BiFunction)}.
      */
     @Test
     public void hasNextStartedInBetween() {
@@ -392,16 +409,16 @@ public final class FilledIteratorTest {
             new SimpleField(), new SimpleField(), new SimpleField(),
         };
         MatcherAssert.assertThat(
-            new SimpleBoard(fields)
-                .filled(
-                    0, (size, index) -> index + 1
-                ).hasNext(),
+            new Filled(
+                new SimpleBoard(fields),
+                (size, index) -> index + 1
+            ).hasNext(),
             Matchers.is(true)
         );
     }
 
     /**
-     * With {@link FilledIterator#FilledIterator(Board, int, BiFunction)} one
+     * With {@link Filled#Filled(Board, int, BiFunction)} one
      * can produce a vertical iteration.
      */
     @Test

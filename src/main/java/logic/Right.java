@@ -39,7 +39,8 @@ public class Right implements Move<Board> {
                 final Field current = board.field(cell);
                 if (Field.isEmpty(current)) {
                     final int iteration = board.rowSize() - 1 - cell;
-                    final Iterator<Field> filled = board.filled(
+                    final Iterator<Field> filled = new Filled(
+                        board,
                         row,
                         (size, index) -> size - 1 - index - iteration - 1
                     );
@@ -57,7 +58,8 @@ public class Right implements Move<Board> {
     @Override
     public final void merge(final Board board) {
         for (int row = 0; row < board.rowSize(); ++row) {
-            final Iterator<Field> filled = board.filled(
+            final Iterator<Field> filled = new Filled(
+                board,
                 row,
                 (size, index) -> size - index - 1
             );
