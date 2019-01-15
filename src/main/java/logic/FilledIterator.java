@@ -56,13 +56,16 @@ public class FilledIterator implements Iterator<Field> {
     /**
      * Ctor.
      * @param board The board to iterate through.
-     * @param row The row to iterate through.
+     * @param row The row to iterate through. Choosing an unavailable row
+     *  results in an empty iteration.
      * @param cellFunction The function to transform an index to the concrete
      *  cell. It gets the current index and the size of a row to return the
      *  cell. Example:
      *  <pre>{@code (index, rowSize) -> index; // normal order}</pre>
      *  <pre>{@code (index, rowSize) -> size - 1 - index; // reversed order}
      *  </pre>
+     *  Choosing a cellFunction that returns unavailable indices results in an
+     *  empty iteration.
      * @checkstyle ParameterNameCheck (5 lines)
      */
     public FilledIterator(
@@ -82,22 +85,18 @@ public class FilledIterator implements Iterator<Field> {
     public final boolean hasNext() {
         // @checkstyle LocalVariableName (1 line)
         int nextCursor = this.cursor + 1;
-        if (0 <= this.row && this.row < this.board.rowSize()) {
-            while (nextCursor < this.board.rowSize()) {
-                if (
-                    Field.isFilled(
-                        this.board.get(
-                            this.cellFunction.apply(
-                                this.board.rowSize(),
-                                nextCursor
-                            ) + this.row * this.board.rowSize()
-                        )
-                    )
-                ) {
-                    return true;
-                } else {
-                    ++nextCursor;
-                }
+        while (nextCursor < this.board.rowSize()) {
+            final int real = this.cellFunction.apply(
+                this.board.rowSize(),
+                nextCursor
+            ) + this.row * this.board.rowSize();
+            if (real < 0 || this.board.size() <= real) {
+                break;
+            }
+            if (Field.isFilled(this.board.get(real))) {
+                return true;
+            } else {
+                ++nextCursor;
             }
         }
         return false;

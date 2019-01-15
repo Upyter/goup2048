@@ -31,7 +31,7 @@ public class Right implements Move<Board> {
     @Override
     public final void push(final Board board) {
         for (int row = 0; row < board.rowSize(); ++row) {
-            for (int cell = 0; cell < board.rowSize(); ++cell) {
+            for (int cell = 0; cell < board.rowSize() - 1; ++cell) {
                 final Field current = board.get(cell);
                 if (Field.isEmpty(current)) {
                     final int temp = cell;

@@ -322,6 +322,24 @@ public final class FilledIteratorTest {
     /**
      * {@link FilledIterator#hasNext()} mustn't throw exceptions, even if
      * {@link FilledIterator#FilledIterator(Board, int, BiFunction)} is used
+     * to create an iteration through an unavailable row.
+     */
+    @Test
+    public void hasNextInvalidRow() {
+        MatcherAssert.assertThat(
+            new SimpleBoard(
+                new SimpleField(), new SimpleField(),
+                new SimpleField(), new SimpleField()
+            ).filled(
+                2, (index, size) -> size
+            ).hasNext(),
+            Matchers.is(false)
+        );
+    }
+
+    /**
+     * {@link FilledIterator#hasNext()} mustn't throw exceptions, even if
+     * {@link FilledIterator#FilledIterator(Board, int, BiFunction)} is used
      * to create an iteration through unavailable indices.
      */
     @Test
@@ -331,7 +349,7 @@ public final class FilledIteratorTest {
                 new SimpleField(), new SimpleField(),
                 new SimpleField(), new SimpleField()
             ).filled(
-                2, (index, size) -> size
+                0, (index, size) -> 5
             ).hasNext(),
             Matchers.is(false)
         );
