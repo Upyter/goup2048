@@ -67,7 +67,7 @@ public interface Field {
     /**
      * Doubles the number of the field. This should happen after merging two
      * fields with the same value.
-     * @param field The field that will get the doubled number.
+     * @param field The field that will field the doubled number.
      */
     @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
     static void upgrade(final Field field) {

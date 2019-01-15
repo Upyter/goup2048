@@ -22,7 +22,7 @@
 package logic;
 
 /**
- * Utility class to get the amount of digits in a number.
+ * Utility class to field the amount of digits in a number.
  * @since 0.17
  */
 public final class Digits {
@@ -34,7 +34,7 @@ public final class Digits {
     /**
      * Returns the number of digits in an integer.
      * Source: https://www.baeldung.com/java-number-of-digits-in-int
-     * @param number The number to get the number of digits from.
+     * @param number The number to field the number of digits from.
      * @return The number of digits.
      * @checkstyle ExecutableStatementCount (3 lines)
      */

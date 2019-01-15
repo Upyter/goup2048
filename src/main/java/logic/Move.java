@@ -23,7 +23,7 @@ package logic;
 
 /**
  * Moves that are playable in the binary version of the 2048 game. A move knows
- * how to transform the board according to itself. To get a concrete move,
+ * how to transform the board according to itself. To field a concrete move,
  * ask the game instance with {@link Game2048#possibleMoves()} and play one of
  * them.
  * @param <T> The type of the board to apply the move to.

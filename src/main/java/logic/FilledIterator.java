@@ -93,7 +93,7 @@ public class FilledIterator implements Iterator<Field> {
             if (real < 0 || this.board.size() <= real) {
                 break;
             }
-            if (Field.isFilled(this.board.get(real))) {
+            if (Field.isFilled(this.board.field(real))) {
                 return true;
             } else {
                 ++nextCursor;
@@ -116,7 +116,7 @@ public class FilledIterator implements Iterator<Field> {
         }
         do {
             ++this.cursor;
-            final var field = this.board.get(
+            final var field = this.board.field(
                 this.cellFunction.apply(
                     this.board.rowSize(),
                     this.cursor

@@ -65,7 +65,7 @@ public class SimpleBoard implements Board {
     }
 
     @Override
-    public final Field get(final int index) {
+    public final Field field(final int index) {
         if (this.fields.length <= index) {
             throw new IllegalArgumentException(
                 String.format(

@@ -36,7 +36,7 @@ public interface Board {
      * @param index The index of the value.
      * @return The value at the index.
      */
-    Field get(int index);
+    Field field(int index);
 
     /**
      * Returns the moves that are possible on the current map.
